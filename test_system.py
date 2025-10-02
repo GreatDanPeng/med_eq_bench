@@ -102,7 +102,7 @@ def test_quality_evaluation():
     print("\nTesting quality evaluation...")
     
     try:
-        evaluator = HealthcareQualityEvaluator(model_name="gpt-4o-mini")
+        evaluator = HealthcareQualityEvaluator(model_name="deepseek-v3.1")
         
         mock_conversation = """
         Patient: I'm concerned about my symptoms and want to make sure we're doing everything we can.

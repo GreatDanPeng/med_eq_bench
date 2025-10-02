@@ -20,7 +20,7 @@ This project builds upon the EQ-Bench methodology and sycophancy research to cre
 - **Communication Adaptability**: Adjusting communication style based on patient EQ
 - **Stress Management**: Maintaining composure under pressure
 
-### 3. Healthcare Quality Metrics
+### 3. Healthcare Quality Metrics (Spiral-Bench)
 - **Communication Effectiveness**: Clarity, empathy, and understanding in interactions
 - **Clinical Decision Quality**: Adherence to guidelines while considering patient factors
 - **Patient Satisfaction**: Perceived quality of care and trust

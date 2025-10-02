@@ -18,6 +18,7 @@ class APIConfig:
     google_api_key: Optional[str] = None
     vertex_project_id: Optional[str] = None
     vertex_location: Optional[str] = "global"
+    free_open_router_key: Optional[str] = None
 
 
 def load_api_config() -> APIConfig:
@@ -27,65 +28,20 @@ def load_api_config() -> APIConfig:
         anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"),
         google_api_key=os.getenv("GOOGLE_API_KEY"),
         vertex_project_id=os.getenv("VERTEX_PROJECT_ID"),
-        vertex_location=os.getenv("VERTEX_LOCATION", "global")
+        vertex_location=os.getenv("VERTEX_LOCATION", "global"),
+        free_open_router_key=os.getenv("MOONSHOT_K2")
     )
 
 
-# Available models for EQ assessment
+# Available models for EQ assessment (configured for your specific setup)
 AVAILABLE_MODELS = {
     "openai": {
-        "gpt-4": {
-            "name": "gpt-4",
-            "provider": "openai",
-            "max_tokens": 4096,
-            "temperature": 0.7,
-            "description": "GPT-4 for high-quality EQ assessment"
-        },
-        "gpt-4o": {
-            "name": "gpt-4o",
-            "provider": "openai",
-            "max_tokens": 4096,
-            "temperature": 0.7,
-            "description": "GPT-4o for optimized EQ assessment"
-        },
         "gpt-4o-mini": {
             "name": "gpt-4o-mini",
             "provider": "openai",
             "max_tokens": 4096,
             "temperature": 0.7,
-            "description": "GPT-4o-mini for cost-effective EQ assessment"
-        }
-    },
-    "anthropic": {
-        "claude-3-5-sonnet-20241022": {
-            "name": "claude-3-5-sonnet-20241022",
-            "provider": "anthropic",
-            "max_tokens": 4096,
-            "temperature": 0.7,
-            "description": "Claude 3.5 Sonnet for advanced EQ assessment"
-        },
-        "claude-3-haiku-20240307": {
-            "name": "claude-3-haiku-20240307",
-            "provider": "anthropic",
-            "max_tokens": 4096,
-            "temperature": 0.7,
-            "description": "Claude 3 Haiku for efficient EQ assessment"
-        }
-    },
-    "google": {
-        "gemini-1.5-pro": {
-            "name": "gemini-1.5-pro",
-            "provider": "google",
-            "max_tokens": 4096,
-            "temperature": 0.7,
-            "description": "Gemini 1.5 Pro for comprehensive EQ assessment"
-        },
-        "gemini-1.5-flash": {
-            "name": "gemini-1.5-flash",
-            "provider": "google",
-            "max_tokens": 4096,
-            "temperature": 0.7,
-            "description": "Gemini 1.5 Flash for fast EQ assessment"
+            "description": "GPT-4o-mini for cost-effective healthcare EQ assessment"
         }
     },
     "vertex": {
@@ -94,7 +50,51 @@ AVAILABLE_MODELS = {
             "provider": "vertex",
             "max_tokens": 4096,
             "temperature": 0.7,
-            "description": "Gemini 2.0 Flash (Vertex AI) for experimental EQ assessment"
+            "description": "Gemini 2.0 Flash (Vertex AI) for healthcare EQ assessment"
+        }
+    },
+    "openrouter": {
+        "deepseek/deepseek-chat-v3.1:free": {
+            "name": "deepseek/deepseek-chat-v3.1:free",
+            "provider": "openrouter",
+            "max_tokens": 4096,
+            "temperature": 0.7,
+            "description": "DeepSeek Chat v3.1 (Free) via OpenRouter for cost-effective EQ assessment"
+        },
+        "grok-4-fast": {
+            "name": "x-ai/grok-4-fast:free",
+            "provider": "openrouter",
+            "max_tokens": 4096,
+            "temperature": 0.7,
+            "description": "Grok 4 Fast (Free) via OpenRouter for cost-effective EQ assessment"
+        },
+        "alibaba/tongyi-deepresearch-30b-a3b:free": {
+            "name": "alibaba/tongyi-deepresearch-30b-a3b:free",
+            "provider": "openrouter",
+            "max_tokens": 4096,
+            "temperature": 0.7,
+            "description": ""
+        },
+        "openai/gpt-oss-120b:free": {
+            "name": "openai/gpt-oss-120b:free",
+            "provider": "openrouter",
+            "max_tokens": 4096,
+            "temperature": 0.7,
+            "description": ""           
+        },
+        "moonshotai/kimi-k2:free":{
+            "name": "moonshotai/kimi-k2:free",
+            "provider": "openrouter",
+            "max_tokens": 4096,
+            "temperature": 0.7,
+            "description": ""           
+        },
+        "google/gemma-3n-e2b-it:free":{
+            "name": "google/gemma-3n-e2b-it:free",
+            "provider": "openrouter",
+            "max_tokens": 4096,
+            "temperature": 0.7,
+            "description": ""           
         }
     }
 }
@@ -113,23 +113,11 @@ def list_available_models() -> Dict[str, Dict[str, Any]]:
     """List all available models."""
     return AVAILABLE_MODELS
 
-
-def get_recommended_models() -> Dict[str, str]:
-    """Get recommended models for different use cases."""
-    return {
-        "best_quality": "gpt-4o",
-        "best_value": "gpt-4o-mini",
-        "fastest": "gemini-1.5-flash",
-        "most_advanced": "claude-3-5-sonnet-20241022",
-        "experimental": "gemini-2.0-flash-exp"
-    }
-
-
 # Default configuration
 DEFAULT_CONFIG = {
-    "model": "gpt-4o-mini",
+    "model": "deepseek-v3.1",
     "temperature": 0.7,
     "max_tokens": 4096,
-    "timeout": 30,
+    "timeout": 200,
     "retry_attempts": 3
 }

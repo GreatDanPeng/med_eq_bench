@@ -73,23 +73,87 @@ class PatientAgent:
     def generate_response(self, conversation_history: List[Message]) -> str:
         """
         Generate a patient response based on EQ characteristics and conversation history.
-        
-        This is a placeholder implementation. In a full system, this would:
-        1. Analyze the conversation history
-        2. Consider the patient's EQ profile
-        3. Generate a response that reflects their emotional intelligence characteristics
-        4. Use the specified LLM to generate the response
+        Uses LLM to generate realistic patient responses.
         """
-        # Placeholder response generation
+        import requests
+        import os
+        from dotenv import load_dotenv
+        load_dotenv()
+
+        # Build conversation context
+        conversation_text = "\n".join([f"{msg.role}: {msg.content}" for msg in conversation_history[-3:]])  # Last 3 messages for context
+
+        # Patient profile information
+        patient_info = self.scenario.patient_profile
+        chief_complaint = patient_info.get('chief_complaint', 'general health concerns')
+        emotional_state = patient_info.get('emotional_state', 'anxious')
+        age = patient_info.get('age', 'adult')
+        health_anxiety_level = patient_info.get('health_anxiety_level', 'moderate')
+        previous_experiences = patient_info.get('previous_experiences', '')
+        communication_style = patient_info.get('communication_style', 'normal')
+        cultural_background = patient_info.get('cultural_background', '')
+
         if not conversation_history:
-            return f"Hello, I'm here because {self.scenario.patient_profile.get('chief_complaint', 'I have some concerns about my health')}."
-        
-        # Simple response based on last message
-        last_message = conversation_history[-1]
-        if last_message.role == "physician":
-            return "I understand. Could you tell me more about that? I'm feeling a bit worried about my symptoms."
-        
-        return "Thank you for explaining that to me."
+            prompt = f"""You are a {age}-year-old patient visiting a doctor. You have {chief_complaint} and you're feeling {emotional_state}.
+Your health anxiety level is {health_anxiety_level}. Previous experiences: {previous_experiences}
+Your communication style is: {communication_style}
+{f"Cultural background: {cultural_background}" if cultural_background else ""}
+
+Generate a natural opening statement to start the consultation. Keep it concise (1-2 sentences) and reflect your emotional state and communication style.
+
+Your opening statement:"""
+        else:
+            prompt = f"""You are a {age}-year-old patient with {chief_complaint}. You're feeling {emotional_state}.
+Your health anxiety level is {health_anxiety_level}. Your communication style is: {communication_style}
+Previous experiences: {previous_experiences}
+
+Recent conversation:
+{conversation_text}
+
+Generate a natural patient response to the doctor's last message. Consider your communication style and emotional state. Patients often:
+- Ask follow-up questions
+- Express concerns or fears
+- Provide additional symptoms or context
+- Seek reassurance
+
+Keep your response to 1-2 sentences and stay in character.
+
+Patient response:"""
+
+        try:
+            response = requests.post(
+                url="https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {os.getenv('MOONSHOT_K2')}",
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "https://healthcare-eq-benchmarks.com",
+                    "X-Title": "Healthcare EQ Benchmarks"
+                },
+                data=json.dumps({
+                    "model": self.model_name,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.7,
+                    "max_tokens": 4096
+                }),
+                timeout=30
+            )
+
+            response.raise_for_status()
+            response_json = response.json()
+            response_text = response_json["choices"][0]["message"]["content"]
+
+            # Clean up the response
+            response_text = response_text.strip().replace('"', '').replace("Patient:", "").strip()
+            return response_text
+        except Exception as e:
+            print(f"API call failed for patient agent: {e}")
+            print(f"Model: {self.model_name}")
+            print(f"Response status: {getattr(response, 'status_code', 'No response')}")
+            if hasattr(response, 'text'):
+                print(f"Response text: {response.text}")
+
+            # Return special marker to indicate API failure
+            return "API_CALL_FAILED"
     
     def add_message(self, content: str, emotional_context: Optional[Dict[str, Any]] = None):
         """Add a message to the conversation history."""
@@ -120,23 +184,93 @@ class PhysicianAgent:
     def generate_response(self, conversation_history: List[Message]) -> str:
         """
         Generate a physician response based on EQ characteristics and conversation history.
-        
-        This is a placeholder implementation. In a full system, this would:
-        1. Analyze the conversation history
-        2. Consider the physician's EQ profile
-        3. Generate a response that reflects their emotional intelligence characteristics
-        4. Use the specified LLM to generate the response
+        Uses LLM to generate realistic physician responses.
         """
-        # Placeholder response generation
+        import requests
+        import os
+        from dotenv import load_dotenv
+        load_dotenv()
+
+        # Build conversation context
+        conversation_text = "\n".join([f"{msg.role}: {msg.content}" for msg in conversation_history[-4:]])  # Last 4 messages for context
+
+        # Physician and scenario information
+        physician_info = self.scenario.physician_profile
+        specialty = physician_info.get('specialty', 'general practice')
+        experience_level = physician_info.get('experience_level', 'experienced')
+        communication_style = physician_info.get('communication_style', 'empathetic and professional')
+        time_pressure = physician_info.get('time_pressure', 'moderate')
+        stress_level = physician_info.get('stress_level', 'moderate')
+
+        # Get clinical guidelines from scenario
+        clinical_guidelines = self.scenario.clinical_guidelines
+
         if not conversation_history:
-            return "Hello, I'm Dr. Smith. How can I help you today? What brings you in today?"
-        
-        # Simple response based on last message
-        last_message = conversation_history[-1]
-        if last_message.role == "patient":
-            return "I understand your concerns. Let me ask you a few questions to better understand your symptoms and help determine the best course of action."
-        
-        return "Is there anything else you'd like to discuss about your condition?"
+            prompt = f"""You are a {experience_level} {specialty} physician. Your communication style is {communication_style}.
+Current time pressure: {time_pressure}, stress level: {stress_level}
+
+Clinical Guidelines for this consultation:
+{clinical_guidelines}
+
+Generate a professional and warm greeting to start the consultation. Keep it concise (1-2 sentences).
+
+Your greeting:"""
+        else:
+            prompt = f"""You are a {experience_level} {specialty} physician. Your communication style is {communication_style}.
+Current time pressure: {time_pressure}, stress level: {stress_level}
+
+Clinical Guidelines to follow:
+{clinical_guidelines}
+
+Recent conversation:
+{conversation_text}
+
+Generate a professional physician response to the patient's last message. Follow the clinical guidelines and consider your stress level and time pressure. As a healthcare professional, you should:
+- Show empathy and understanding
+- Ask relevant follow-up questions
+- Provide medical guidance when appropriate
+- Maintain professional boundaries
+- Be reassuring but honest
+- Follow the clinical guidelines provided
+
+Keep your response to 2-3 sentences and maintain a professional yet caring tone.
+
+Physician response:"""
+
+        try:
+            response = requests.post(
+                url="https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {os.getenv('MOONSHOT_K2')}",
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "https://healthcare-eq-benchmarks.com",
+                    "X-Title": "Healthcare EQ Benchmarks"
+                },
+                data=json.dumps({
+                    "model": self.model_name,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.7,
+                    "max_tokens": 4096
+                }),
+                timeout=30
+            )
+
+            response.raise_for_status()
+            response_json = response.json()
+            response_text = response_json["choices"][0]["message"]["content"]
+
+            # Clean up the response
+            response_text = response_text.strip().replace('"', '').replace("Doctor:", "").replace("Physician:", "").strip()
+            return response_text
+        except Exception as e:
+            print(f"API call failed for physician agent: {e}")
+            print(f"Model: {self.model_name}")
+            print(f"Response status: {getattr(response, 'status_code', 'No response')}")
+            if hasattr(response, 'text'):
+                print(f"Response text: {response.text}")
+
+            # Return special marker to indicate API failure
+            return "API_CALL_FAILED"
     
     def add_message(self, content: str, emotional_context: Optional[Dict[str, Any]] = None):
         """Add a message to the conversation history."""
