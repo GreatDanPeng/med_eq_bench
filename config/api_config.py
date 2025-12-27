@@ -61,7 +61,7 @@ AVAILABLE_MODELS = {
             "temperature": 0.7,
             "description": "DeepSeek Chat v3.1 (Free) via OpenRouter for cost-effective EQ assessment"
         },
-        "grok-4-fast": {
+        "x-ai/grok-4-fast:free": {
             "name": "x-ai/grok-4-fast:free",
             "provider": "openrouter",
             "max_tokens": 4096,
@@ -94,7 +94,56 @@ AVAILABLE_MODELS = {
             "provider": "openrouter",
             "max_tokens": 4096,
             "temperature": 0.7,
-            "description": ""           
+            "description": ""
+        },
+        "meituan/longcat-flash-chat:free": {
+            "name": "meituan/longcat-flash-chat:free",
+            "provider": "openrouter",
+            "max_tokens": 4096,
+            "temperature": 0.7,
+            "description": ""
+        },
+        "z-ai/glm-4.5-air:free": {
+            "name": "z-ai/glm-4.5-air:free",
+            "provider": "openrouter",
+            "max_tokens": 4096,
+            "temperature": 0.7,
+            "description": ""
+        },
+        "qwen/qwen3-coder:free": {
+            "name": "qwen/qwen3-coder:free",
+            "provider": "openrouter",
+            "max_tokens": 4096,
+            "temperature": 0.7,
+            "description": ""
+        },
+        "meta-llama/llama-3.3-8b-instruct:free": {
+            "name": "meta-llama/llama-3.3-8b-instruct:free",
+            "provider": "openrouter",
+            "max_tokens": 4096,
+            "temperature": 0.7,
+            "description": ""
+        },
+        "qwen/qwen3-30b-a3b:free": {
+            "name": "qwen/qwen3-30b-a3b:free",
+            "provider": "openrouter",
+            "max_tokens": 4096,
+            "temperature": 0.7,
+            "description": ""
+        },
+        "meta-llama/llama-4-maverick:free": {
+            "name": "meta-llama/llama-4-maverick:free",
+            "provider": "openrouter",
+            "max_tokens": 4096,
+            "temperature": 0.7,
+            "description": ""
+        },
+        "deepseek/deepseek-r1:free": {
+            "name": "deepseek/deepseek-r1:free",
+            "provider": "openrouter",
+            "max_tokens": 4096,
+            "temperature": 0.7,
+            "description": ""
         }
     }
 }

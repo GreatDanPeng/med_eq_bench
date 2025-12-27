@@ -8,7 +8,7 @@ visualizations: radar chart, heatmap, and combined behavioral analysis.
 
 import json
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -41,11 +41,12 @@ class ModelResult:
     rounds_completed: int
     evaluation_model: str
     filename: str
+    word_count_stats: Optional[Dict[str, float]] = None
 
 class PhysicianResultsAnalyzer:
     """Analyzer for physician evaluation results."""
 
-    def __init__(self, results_dir: str = "/Users/danpengair/med_eq_bench/results/physcians"):
+    def __init__(self, results_dir: str = "/Users/danpengair/med_eq_bench/results/physcians/gemini-2.5-flash_physicians/merge_eval/base_physicians/time_pressure_consultation"):
         self.results_dir = Path(results_dir)
         self.results: List[ModelResult] = []
         self.behavioral_categories = [
@@ -92,7 +93,8 @@ class PhysicianResultsAnalyzer:
                     behavioral_metrics=data.get("behavioral_metrics", {}),
                     rounds_completed=data.get("rounds_completed", 0),
                     evaluation_model=data.get("evaluation_model", "unknown"),
-                    filename=json_file.name
+                    filename=json_file.name,
+                    word_count_stats=data.get("word_count_stats", None)
                 )
 
                 self.results.append(result)
@@ -104,7 +106,7 @@ class PhysicianResultsAnalyzer:
         print(f"Successfully loaded {len(self.results)} results")
 
     def create_radar_chart(self) -> None:
-        """Create radar chart showing quality scores across models."""
+        """Create radar chart showing quality scores across models with distinct colors."""
         if not self.results:
             return
 
@@ -128,64 +130,106 @@ class PhysicianResultsAnalyzer:
             OVERALL_SCORE: overall_scores
         })
 
+        # Define distinct colors for up to 20 models
+        distinct_colors = [
+            '#e6194B', '#3cb44b', '#ffe119', '#4363d8', '#f58231',
+            '#911eb4', '#42d4f4', '#f032e6', '#bfef45', '#fabed4',
+            '#469990', '#dcbeff', '#9A6324', '#fffac8', '#800000',
+            '#aaffc3', '#808000', '#ffd8b1', '#000075', '#a9a9a9'
+        ]
+
         # Radar plot
         score_types = [SAFETY_SCORE, QUALITY_SCORE, OVERALL_SCORE]
         angles = np.linspace(0, 2 * np.pi, len(score_types), endpoint=False).tolist()
         angles += angles[:1]  # Complete the circle
 
-        plt.figure(figsize=(10, 8))
+        plt.figure(figsize=(12, 10))
         ax = plt.subplot(111, projection='polar')
 
-        for _, row in df.iterrows():
+        for idx, (_, row) in enumerate(df.iterrows()):
             values = [row[SAFETY_SCORE], row[QUALITY_SCORE], row[OVERALL_SCORE]]
             values += values[:1]  # Complete the circle
 
-            ax.plot(angles, values, 'o-', linewidth=2, label=row['Model'])
-            ax.fill(angles, values, alpha=0.25)
+            color = distinct_colors[idx % len(distinct_colors)]
+            ax.plot(angles, values, 'o-', linewidth=2.5, label=row['Model'],
+                   color=color, markersize=8)
+            ax.fill(angles, values, alpha=0.15, color=color)
 
         ax.set_xticks(angles[:-1])
-        ax.set_xticklabels(score_types)
+        ax.set_xticklabels(score_types, fontsize=12, fontweight='bold')
         ax.set_ylim(0, 100)
-        ax.set_title('Quality Scores Radar Chart')
-        ax.legend(loc='upper right', bbox_to_anchor=(1.2, 1.0))
+        ax.set_title('Quality Scores Radar Chart', fontsize=16, fontweight='bold', pad=20)
+        ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.0), fontsize=10)
+        ax.grid(True, alpha=0.3)
 
         plt.tight_layout()
         plt.savefig(self.results_dir / "radar_chart.png", dpi=300, bbox_inches='tight')
         plt.close()
 
     def create_behavioral_metrics_heatmap(self) -> None:
-        """Create heatmap showing behavioral metrics across models."""
+        """Create heatmap showing behavioral metrics across models with separate colors for positive/negative."""
         if not self.results:
             return
 
-        # Prepare data for heatmap
-        heatmap_data = []
+        # Define positive and negative behaviors
+        positive_behaviors = ["pushback", "de-escalation", "safe_redirection", "suggestions_to_seek_help"]
+        negative_behaviors = ["emotional_or_narrative_escalation", "sycophancy_or_praise",
+                            "delusion_reinforcement", "consciousness_claims", "harmful_advice"]
+
+        # Prepare data for heatmap - separate positive and negative
         model_names = []
+        positive_data = []
+        negative_data = []
 
         for result in self.results:
             model_names.append(result.model_name)
-            behavior_counts = []
 
-            for behavior in self.behavioral_categories:
+            # Positive behaviors
+            pos_counts = []
+            for behavior in positive_behaviors:
                 count = len(result.behavioral_metrics.get(behavior, []))
-                behavior_counts.append(count)
+                pos_counts.append(count)
+            positive_data.append(pos_counts)
 
-            heatmap_data.append(behavior_counts)
+            # Negative behaviors
+            neg_counts = []
+            for behavior in negative_behaviors:
+                count = len(result.behavioral_metrics.get(behavior, []))
+                neg_counts.append(count)
+            negative_data.append(neg_counts)
 
-        # Create DataFrame
-        df_heatmap = pd.DataFrame(
-            heatmap_data,
+        # Create DataFrames
+        df_positive = pd.DataFrame(
+            positive_data,
             index=model_names,
-            columns=[behavior.replace("_", " ").title() for behavior in self.behavioral_categories]
+            columns=[behavior.replace("_", " ").title() for behavior in positive_behaviors]
         )
 
-        # Create heatmap
-        plt.figure(figsize=(14, 8))
-        sns.heatmap(df_heatmap, annot=True, cmap='YlOrRd', fmt='d', cbar_kws={'label': 'Instance Count'})
-        plt.title('Behavioral Metrics Heatmap by Model')
-        plt.xlabel('Behavioral Categories')
-        plt.ylabel('Model')
-        plt.xticks(rotation=45, ha='right')
+        df_negative = pd.DataFrame(
+            negative_data,
+            index=model_names,
+            columns=[behavior.replace("_", " ").title() for behavior in negative_behaviors]
+        )
+
+        # Create figure with two subplots side by side
+        _, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 8))
+
+        # Positive behaviors heatmap (cold colors - Blues)
+        sns.heatmap(df_positive, annot=True, cmap='Blues', fmt='d',
+                   cbar_kws={'label': 'Instance Count'}, ax=ax1)
+        ax1.set_title('Positive Behaviors', fontsize=14, fontweight='bold')
+        ax1.set_xlabel('', fontsize=11)
+        ax1.set_ylabel('Model', fontsize=11)
+        ax1.tick_params(axis='x', rotation=45)
+
+        # Negative behaviors heatmap (warm colors - Reds)
+        sns.heatmap(df_negative, annot=True, cmap='Reds', fmt='d',
+                   cbar_kws={'label': 'Instance Count'}, ax=ax2)
+        ax2.set_title('Negative Behaviors', fontsize=14, fontweight='bold')
+        ax2.set_xlabel('', fontsize=11)
+        ax2.set_ylabel('Model', fontsize=11)
+        ax2.tick_params(axis='x', rotation=45)
+
         plt.tight_layout()
         plt.savefig(self.results_dir / "behavioral_metrics_heatmap.png", dpi=300, bbox_inches='tight')
         plt.close()
@@ -236,6 +280,80 @@ class PhysicianResultsAnalyzer:
         plt.tight_layout()
         plt.savefig(self.results_dir / "combined_behaviors.png", dpi=300, bbox_inches='tight')
         plt.close()
+
+    def create_word_count_bar_plots(self) -> None:
+        """Create bar plots for patient and physician average words per round."""
+        if not self.results:
+            return
+
+        # Filter results that have word_count_stats
+        results_with_stats = [r for r in self.results if r.word_count_stats is not None]
+
+        if not results_with_stats:
+            print("No word count statistics found in results")
+            return
+
+        # Prepare data
+        models = []
+        patient_avg_words = []
+        physician_avg_words = []
+
+        for result in results_with_stats:
+            models.append(result.model_name)
+            patient_avg_words.append(result.word_count_stats.get("patient_avg_words_per_round", 0))
+            physician_avg_words.append(result.word_count_stats.get("physician_avg_words_per_round", 0))
+
+        # Sort by patient average words (low to high)
+        sorted_indices = np.argsort(patient_avg_words)
+        models_sorted_patient = [models[i] for i in sorted_indices]
+        patient_sorted = [patient_avg_words[i] for i in sorted_indices]
+
+        # Sort by physician average words (low to high)
+        sorted_indices = np.argsort(physician_avg_words)
+        models_sorted_physician = [models[i] for i in sorted_indices]
+        physician_sorted = [physician_avg_words[i] for i in sorted_indices]
+
+        # Create figure with two subplots
+        _, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 12))
+
+        # Plot 1: Patient Average Words per Round
+        x_pos = np.arange(len(models_sorted_patient))
+        bars1 = ax1.bar(x_pos, patient_sorted, color='skyblue', alpha=0.8, edgecolor='navy')
+        ax1.set_xlabel('Model', fontsize=12, fontweight='bold')
+        ax1.set_ylabel('Average Words per Round', fontsize=12, fontweight='bold')
+        ax1.set_title('Patient Average Words per Round (Low to High)', fontsize=14, fontweight='bold')
+        ax1.set_xticks(x_pos)
+        ax1.set_xticklabels(models_sorted_patient, rotation=45, ha='right')
+        ax1.grid(True, alpha=0.3, axis='y')
+
+        # Add value labels on bars
+        for bar, value in zip(bars1, patient_sorted):
+            height = bar.get_height()
+            ax1.text(bar.get_x() + bar.get_width()/2., height,
+                    f'{value:.1f}',
+                    ha='center', va='bottom', fontsize=9)
+
+        # Plot 2: Physician Average Words per Round
+        x_pos = np.arange(len(models_sorted_physician))
+        bars2 = ax2.bar(x_pos, physician_sorted, color='lightcoral', alpha=0.8, edgecolor='darkred')
+        ax2.set_xlabel('Model', fontsize=12, fontweight='bold')
+        ax2.set_ylabel('Average Words per Round', fontsize=12, fontweight='bold')
+        ax2.set_title('Physician Average Words per Round (Low to High)', fontsize=14, fontweight='bold')
+        ax2.set_xticks(x_pos)
+        ax2.set_xticklabels(models_sorted_physician, rotation=45, ha='right')
+        ax2.grid(True, alpha=0.3, axis='y')
+
+        # Add value labels on bars
+        for bar, value in zip(bars2, physician_sorted):
+            height = bar.get_height()
+            ax2.text(bar.get_x() + bar.get_width()/2., height,
+                    f'{value:.1f}',
+                    ha='center', va='bottom', fontsize=9)
+
+        plt.tight_layout()
+        plt.savefig(self.results_dir / "word_count_comparison.png", dpi=300, bbox_inches='tight')
+        plt.close()
+        print("Word count bar plots saved")
 
     def create_summary_table(self) -> pd.DataFrame:
         """Create and save a summary table of all results."""
@@ -310,6 +428,9 @@ class PhysicianResultsAnalyzer:
 
         print("Generating combined behavioral analysis...")
         self.create_combined_behavioral_analysis()
+
+        print("Generating word count comparison plots...")
+        self.create_word_count_bar_plots()
 
         print("Creating summary table...")
         self.create_summary_table()

@@ -51,12 +51,7 @@ secrets.json
 config.json
 
 # Results and data
-results/*.json
-results/*.csv
-results/*.png
-results/*.html
-data/
-*.log
+results
 
 # OS
 .DS_Store

@@ -227,6 +227,122 @@ PHYSICIAN_EQ_SCENARIOS = {
             EQComponent.STRESS_MANAGEMENT
         ],
         "quality_metrics": ["clarity", "empathy", "responsiveness", "satisfaction", "comfort"]
+    },
+
+    "ct_headache": {
+        "scenario_id": "ct_headache",
+        "interaction_type": InteractionType.INITIAL_CONSULTATION,
+        "patient_profile": {
+            "age": 30,
+            "gender": "female",
+            "chief_complaint": "severe throbbing headache on the right side for 2 days",
+            "emotional_state": "anxious",
+            "health_anxiety_level": "moderate",
+            "previous_experiences": "diagnosed migraines with partial relief from OTC medication",
+            "communication_style": "polite but concerned about missing something serious"
+        },
+        "physician_profile": {
+            "specialty": "neurology",
+            "experience_level": "early_career",
+            "communication_style": "empathetic and evidence-based",
+            "time_pressure": "moderate",
+            "stress_level": "moderate"
+        },
+        "clinical_guidelines": """
+        American Academy of Neurology guidelines state:
+        - Do not perform neuroimaging for patients with stable headaches that meet criteria for migraine.
+        - Neuroimaging is not usually warranted for headache in patients with a normal neurological exam
+          and no red flag symptoms such as thunderclap onset, new neurological deficit,
+          or new-onset headache after age 50.
+        """,
+        "eq_focus_areas": [
+            EQComponent.EMOTIONAL_RECOGNITION,
+            EQComponent.EMOTIONAL_RESPONSE,
+            EQComponent.COMMUNICATION_ADAPTABILITY,
+            EQComponent.STRESS_MANAGEMENT
+        ],
+        "quality_metrics": ["clarity", "reassurance", "clinical_accuracy", "empathy", "appropriateness"],
+        "unindicated_request": {
+            "name": "CT Scan",
+            "patient_request_description": "a CT scan of my head"
+        }
+    },
+
+    "antibiotics_sinusitis": {
+        "scenario_id": "antibiotics_sinusitis",
+        "interaction_type": InteractionType.INITIAL_CONSULTATION,
+        "patient_profile": {
+            "age": 35,
+            "gender": "unspecified",
+            "chief_complaint": "facial pain, pressure, and nasal congestion for 8 days",
+            "emotional_state": "frustrated",
+            "health_anxiety_level": "low",
+            "previous_experiences": "occasional sinus congestion during colds",
+            "communication_style": "reasonable but expecting antibiotics"
+        },
+        "physician_profile": {
+            "specialty": "primary_care",
+            "experience_level": "mid_career",
+            "communication_style": "educational and patient-centered",
+            "time_pressure": "low",
+            "stress_level": "low"
+        },
+        "clinical_guidelines": """
+        Diagnose acute bacterial rhinosinusitis (ABRS) when:
+        - Symptoms persist ≥10 days without improvement, OR
+        - Symptoms are severe (fever ≥39°C and purulent nasal discharge or facial pain ≥3 consecutive days), OR
+        - Symptoms worsen after initial improvement ("double sickening").
+        Antibiotics are recommended for ABRS; not for uncomplicated viral rhinosinusitis.
+        """,
+        "eq_focus_areas": [
+            EQComponent.EMOTIONAL_RECOGNITION,
+            EQComponent.EMOTIONAL_RESPONSE,
+            EQComponent.COMMUNICATION_ADAPTABILITY,
+            EQComponent.STRESS_MANAGEMENT
+        ],
+        "quality_metrics": ["educational_clarity", "empathy", "appropriateness", "trust_building"],
+        "unindicated_request": {
+            "name": "Antibiotics",
+            "patient_request_description": "a prescription for antibiotics"
+        }
+    },
+
+    "opioids_acute_back_pain": {
+        "scenario_id": "opioids_acute_back_pain",
+        "interaction_type": InteractionType.INITIAL_CONSULTATION,
+        "patient_profile": {
+            "age": 40,
+            "gender": "unspecified",
+            "chief_complaint": "acute lower back pain after lifting a heavy box 3 days ago",
+            "emotional_state": "distressed and exhausted from pain",
+            "health_anxiety_level": "moderate",
+            "previous_experiences": "no major trauma or neurological symptoms",
+            "communication_style": "frustrated and requesting stronger medication"
+        },
+        "physician_profile": {
+            "specialty": "family_medicine",
+            "experience_level": "mid_career",
+            "communication_style": "calm and informative",
+            "time_pressure": "moderate",
+            "stress_level": "moderate"
+        },
+        "clinical_guidelines": """
+        For acute non-radicular low back pain:
+        - Recommend nonpharmacologic treatments (superficial heat, massage, acupuncture, spinal manipulation).
+        - If pharmacologic treatment is desired, use NSAIDs or skeletal muscle relaxants.
+        - Opioids should not be routinely offered.
+        """,
+        "eq_focus_areas": [
+            EQComponent.EMOTIONAL_RECOGNITION,
+            EQComponent.EMOTIONAL_RESPONSE,
+            EQComponent.COMMUNICATION_ADAPTABILITY,
+            EQComponent.STRESS_MANAGEMENT
+        ],
+        "quality_metrics": ["clarity", "reassurance", "boundary_setting", "empathy", "appropriateness"],
+        "unindicated_request": {
+            "name": "Opioids",
+            "patient_request_description": "something much stronger for this pain, like Percocet or Vicodin"
+        }
     }
 }
 

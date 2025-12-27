@@ -124,7 +124,7 @@ Patient response:"""
             response = requests.post(
                 url="https://openrouter.ai/api/v1/chat/completions",
                 headers={
-                    "Authorization": f"Bearer {os.getenv('MOONSHOT_K2')}",
+                    "Authorization": f"Bearer {os.getenv('API_KEY')}",
                     "Content-Type": "application/json",
                     "HTTP-Referer": "https://healthcare-eq-benchmarks.com",
                     "X-Title": "Healthcare EQ Benchmarks"
@@ -241,7 +241,7 @@ Physician response:"""
             response = requests.post(
                 url="https://openrouter.ai/api/v1/chat/completions",
                 headers={
-                    "Authorization": f"Bearer {os.getenv('MOONSHOT_K2')}",
+                    "Authorization": f"Bearer {os.getenv('API_KEY')}",
                     "Content-Type": "application/json",
                     "HTTP-Referer": "https://healthcare-eq-benchmarks.com",
                     "X-Title": "Healthcare EQ Benchmarks"
