@@ -28,7 +28,7 @@ from core.multi_agent_system import (
 )
 from core.eq_assessment import EQProfile, EQComponent
 from core.healthcare_quality_evaluator import HealthcareQualityEvaluator
-from config.physician_eq_scenarios import PHYSICIAN_EQ_SCENARIOS, get_physician_scenario, list_physician_scenarios, get_scenario_descriptions
+from config.eq_scenarios import PHYSICIAN_EQ_SCENARIOS, get_physician_scenario, list_physician_scenarios, get_scenario_descriptions
 import requests
 
 Evaluator_list = ["openai/gpt-4o-mini","anthropic/claude-3.5-haiku", "google/gemini-2.5-flash"]

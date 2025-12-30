@@ -53,23 +53,23 @@ AVAILABLE_MODELS = {
             "description": "Gemini 2.0 Flash (Vertex AI) for healthcare EQ assessment"
         }
     },
-    "openrouter": {
-        "deepseek/deepseek-chat-v3.1:free": {
-            "name": "deepseek/deepseek-chat-v3.1:free",
+    "openrouter_free":{
+        "xiaomi/mimo-v2-flash:free": {
+            "name": "xiaomi/mimo-v2-flash:free",
             "provider": "openrouter",
             "max_tokens": 4096,
             "temperature": 0.7,
-            "description": "DeepSeek Chat v3.1 (Free) via OpenRouter for cost-effective EQ assessment"
-        },
-        "x-ai/grok-4-fast:free": {
-            "name": "x-ai/grok-4-fast:free",
-            "provider": "openrouter",
-            "max_tokens": 4096,
-            "temperature": 0.7,
-            "description": "Grok 4 Fast (Free) via OpenRouter for cost-effective EQ assessment"
+            "description": ""          
         },
         "alibaba/tongyi-deepresearch-30b-a3b:free": {
             "name": "alibaba/tongyi-deepresearch-30b-a3b:free",
+            "provider": "openrouter",
+            "max_tokens": 4096,
+            "temperature": 0.7,
+            "description": ""
+        },
+        "qwen/qwen3-4b:free": {
+            "name": "qwen/qwen3-4b:free",
             "provider": "openrouter",
             "max_tokens": 4096,
             "temperature": 0.7,
@@ -89,19 +89,12 @@ AVAILABLE_MODELS = {
             "temperature": 0.7,
             "description": ""           
         },
-        "google/gemma-3n-e2b-it:free":{
-            "name": "google/gemma-3n-e2b-it:free",
+        "google/gemma-3-27b-it:free":{
+            "name": "google/gemma-3-27b-it:free",
             "provider": "openrouter",
             "max_tokens": 4096,
             "temperature": 0.7,
-            "description": ""
-        },
-        "meituan/longcat-flash-chat:free": {
-            "name": "meituan/longcat-flash-chat:free",
-            "provider": "openrouter",
-            "max_tokens": 4096,
-            "temperature": 0.7,
-            "description": ""
+            "description": ""             
         },
         "z-ai/glm-4.5-air:free": {
             "name": "z-ai/glm-4.5-air:free",
@@ -110,40 +103,28 @@ AVAILABLE_MODELS = {
             "temperature": 0.7,
             "description": ""
         },
-        "qwen/qwen3-coder:free": {
-            "name": "qwen/qwen3-coder:free",
+        "meta-llama/llama-3.3-70b-instruct:free": {
+            "name": "meta-llama/llama-3.3-70b-instruct:free",
             "provider": "openrouter",
             "max_tokens": 4096,
             "temperature": 0.7,
             "description": ""
         },
-        "meta-llama/llama-3.3-8b-instruct:free": {
-            "name": "meta-llama/llama-3.3-8b-instruct:free",
+        "nex-agi/deepseek-v3.1-nex-n1:free": {
+            "name": "nex-agi/deepseek-v3.1-nex-n1:free",
             "provider": "openrouter",
             "max_tokens": 4096,
             "temperature": 0.7,
             "description": ""
-        },
-        "qwen/qwen3-30b-a3b:free": {
-            "name": "qwen/qwen3-30b-a3b:free",
+        }
+    },
+    "openrouter": {
+        "x-ai/grok-4-fast": {
+            "name": "x-ai/grok-4-fast",
             "provider": "openrouter",
             "max_tokens": 4096,
             "temperature": 0.7,
-            "description": ""
-        },
-        "meta-llama/llama-4-maverick:free": {
-            "name": "meta-llama/llama-4-maverick:free",
-            "provider": "openrouter",
-            "max_tokens": 4096,
-            "temperature": 0.7,
-            "description": ""
-        },
-        "deepseek/deepseek-r1:free": {
-            "name": "deepseek/deepseek-r1:free",
-            "provider": "openrouter",
-            "max_tokens": 4096,
-            "temperature": 0.7,
-            "description": ""
+            "description": "Grok 4 Fast (Free) via OpenRouter for cost-effective EQ assessment"
         }
     }
 }

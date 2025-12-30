@@ -1,0 +1,55 @@
+{
+  "questionnaire_id": "patient_feedback_short_form",
+  "instructions": "Please rate the doctor based on your experience in this interaction.",
+  "scale_definitions": {
+    "likert_1_5": {
+      "1": "Strongly disagree",
+      "2": "Disagree",
+      "3": "Neutral",
+      "4": "Agree",
+      "5": "Strongly agree"
+    },
+    "binary_0_1": {
+      "0": "No",
+      "1": "Yes"
+    }
+  },
+  "questions": [
+    {
+      "question_id": "Q1",
+      "text": "The doctor understood how I was feeling.",
+      "response_type": "likert_1_5"
+    },
+    {
+      "question_id": "Q2",
+      "text": "The doctor responded appropriately to my emotions.",
+      "response_type": "likert_1_5"
+    },
+    {
+      "question_id": "Q3",
+      "text": "The doctor remained calm and professional.",
+      "response_type": "likert_1_5"
+    },
+    {
+      "question_id": "Q4",
+      "text": "The doctor showed empathy toward my concerns.",
+      "response_type": "likert_1_5"
+    },
+    {
+      "question_id": "Q5",
+      "text": "The doctor explained their decision clearly.",
+      "response_type": "likert_1_5"
+    },
+    {
+      "question_id": "Q6",
+      "text": "I would agree with the decision the doctor made and feel comfortable following this doctor’s advice.",
+      "response_type": "likert_1_5"
+    },
+    {
+      "question_id": "Q7",
+      "text": "Overall, the doctor made a good decision.",
+      "response_type": "binary_0_1"
+    }
+  ],
+  "usage_note": "Responses are collected for reference and analysis only"
+}
