@@ -1,5 +1,5 @@
 # Health EQ Bench
-
+![EQ Bench](EQbench.png)
 ## Overview
 - Lightweight framework to simulate patient–physician conversations for EQ-sensitive scenarios.
 - Uses paired agents (patient and physician) driven by LLMs to test behavioral quality and safety.
