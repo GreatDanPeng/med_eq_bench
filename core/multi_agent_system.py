@@ -20,17 +20,19 @@ from pathlib import Path
 from config.eq_settings import InteractionScenario, Message, AnxietyLevel, EmotionState, ANXIETY_PROMPTS, DEFAULT_ACTION_CHOICES, ActionType
 from config.eq_scenarios import TEST_EQ_SCENARIOS
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
 
 class PatientAgent:
     """
     AI agent representing a patient with specific EQ characteristics.
-    Uses Xiaomi free model (xiaomi/mimo-v2-flash:free) for testing.
+    Uses Xiaomi model (xiaomi/mimo-v2.5) for testing.
     """
 
     def __init__(self,
                  patient_id: str,
                  scenario: InteractionScenario,
-                 model_name: str = "xiaomi/mimo-v2-flash:free",
+                 model_name: str = "xiaomi/mimo-v2.5",
                  api_key: Optional[str] = None):
         self.patient_id = patient_id
         self.scenario = scenario
@@ -175,7 +177,7 @@ Patient response:"""
 class PhysicianAgent:
     """
     AI agent representing a physician.
-    Uses Xiaomi free model (xiaomi/mimo-v2-flash:free) for testing.
+    Uses Xiaomi model (xiaomi/mimo-v2.5) for testing.
     Uses prompt from base_physician.txt.
     Default clinical guideline: "Based on your knowledge, respond appropriately."
     """
@@ -183,14 +185,15 @@ class PhysicianAgent:
     def __init__(self,
                  physician_id: str,
                  scenario: InteractionScenario,
-                 model_name: str = "xiaomi/mimo-v2-flash:free",
+                 model_name: str = "xiaomi/mimo-v2.5",
                  api_key: Optional[str] = None,
-                 physician_prompt_file: str = "/Users/danpengair/med_eq_bench/config/base_physician.txt"):
+                 physician_prompt_file: Optional[str] = None):
         self.physician_id = physician_id
         self.scenario = scenario
         self.model_name = model_name
         self.api_key = api_key
         self.conversation_history: List[Message] = []
+        physician_prompt_file = physician_prompt_file or PROJECT_ROOT / "config" / "base_physician.txt"
 
         # Load physician base prompt
         try:
@@ -410,9 +413,10 @@ class PatientSatisfactionEvaluator:
     """
 
     def __init__(self,
-                 questionnaire_file: str = "/Users/danpengair/med_eq_bench/config/patient_post_questionaire.json",
-                 model_name: str = "xiaomi/mimo-v2-flash:free"):
+                 questionnaire_file: Optional[str] = None,
+                 model_name: str = "xiaomi/mimo-v2.5"):
         self.model_name = model_name
+        questionnaire_file = questionnaire_file or PROJECT_ROOT / "config" / "patient_post_questionaire.json"
 
         # Load questionnaire
         try:
@@ -716,21 +720,21 @@ def create_test_system(scenario_id: str) -> HealthcareMultiAgentSystem:
         gold_standard_action=scenario_data["gold_standard_action"]
     )
 
-    # Create agents with xiaomi/mimo-v2-flash:free model
+    # Create agents with xiaomi/mimo-v2.5 model
     patient_agent = PatientAgent(
         patient_id=f"patient_{scenario_id}",
         scenario=scenario,
-        model_name="xiaomi/mimo-v2-flash:free"
+        model_name="xiaomi/mimo-v2.5"
     )
 
     physician_agent = PhysicianAgent(
         physician_id=f"physician_{scenario_id}",
         scenario=scenario,
-        model_name="xiaomi/mimo-v2-flash:free"
+        model_name="xiaomi/mimo-v2.5"
     )
 
     satisfaction_evaluator = PatientSatisfactionEvaluator(
-        model_name="xiaomi/mimo-v2-flash:free"
+        model_name="xiaomi/mimo-v2.5"
     )
 
     # Create multi-agent system with 10 turns

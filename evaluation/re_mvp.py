@@ -32,7 +32,7 @@ from core.multi_agent_system import (
 
 load_dotenv()
 
-PATIENT_MODEL_API = "xiaomi/mimo-v2-flash:free"
+PATIENT_MODEL_API = "xiaomi/mimo-v2.5"
 PHYSICIAN_ERROR_MARKER = "Physician agent API call failed"
 
 

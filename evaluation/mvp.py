@@ -23,7 +23,7 @@ from config.api_config import AVAILABLE_MODELS
 def run_mvp_evaluation():
     """
     Run MVP evaluation on all TEST_EQ_SCENARIOS with multiple physician models.
-    Patient model: mimo-v2-flash
+    Patient model: mimo-v2.5
     Physician models: All models from openrouter_free
     """
 
@@ -31,8 +31,8 @@ def run_mvp_evaluation():
     physician_models = AVAILABLE_MODELS.get("openrouter_free", {})
 
     # Patient model (fixed)
-    patient_model_api = "xiaomi/mimo-v2-flash:free"
-    patient_model_display = "mimo-v2-flash"
+    patient_model_api = "xiaomi/mimo-v2.5"
+    patient_model_display = "mimo-v2.5"
 
     print("="*80)
     print("MVP EVALUATION - Healthcare EQ Benchmarks")
@@ -52,7 +52,7 @@ def run_mvp_evaluation():
         print(f"{'#'*80}\n")
 
         # Create results directory for this physician model
-        results_dir = Path(f"/Users/danpengair/med_eq_bench/results/mvp/{physician_model_display}/{patient_model_display}_{physician_model_display}")
+        results_dir = project_root / "results" / "mvp" / physician_model_display / f"{patient_model_display}_{physician_model_display}"
         results_dir.mkdir(parents=True, exist_ok=True)
 
         all_results = []
