@@ -54,8 +54,8 @@ AVAILABLE_MODELS = {
         }
     },
     "openrouter_free":{
-        "xiaomi/mimo-v2-flash:free": {
-            "name": "xiaomi/mimo-v2-flash:free",
+        "xiaomi/mimo-v2.5": {
+            "name": "xiaomi/mimo-v2.5",
             "provider": "openrouter",
             "max_tokens": 4096,
             "temperature": 0.7,
