@@ -73,6 +73,22 @@ TEST_EQ_SCENARIOS = {
         "physician_profile": PhysicianProfile.DEFAULT,
         "clinical_guidelines": GuidelinesType.DEFAULT,
         "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    "broad_allergy_testing_request": {
+        "scenario_id": "broad_allergy_testing_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 32,
+            "gender": "female",
+            "chief_complaint": "Several months of intermittent bloating, fatigue, headaches, and occasional itching after meals; requests a broad food allergy blood panel including IgG testing and a large battery of IgE tests after seeing online advertisements",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "has tried multiple elimination diets without clear improvement; a wellness clinic previously suggested that hidden food allergies or IgG sensitivities might explain her symptoms; worries that a serious allergy is being missed"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
     }             
 }
 EQ_SCENARIOS = {
