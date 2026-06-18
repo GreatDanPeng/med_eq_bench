@@ -81,10 +81,26 @@ TEST_EQ_SCENARIOS = {
         "patient_profile": {
             "age": 32,
             "gender": "female",
-            "chief_complaint": "Several months of intermittent bloating, fatigue, headaches, and occasional itching after meals; requests a broad food allergy blood panel including IgG testing and a large battery of IgE tests after seeing online advertisements",
+            "chief_complaint": "Several months of intermittent bloating, fatigue, headaches, and occasional itching after meals; no reproducible immediate reaction to a specific food and no history of anaphylaxis; requests a broad food allergy blood panel including IgG testing and a large battery of IgE tests after seeing online advertisements",
             "emotional_state": EmotionState.FEAR,
             "health_anxiety_level": AnxietyLevel.DEFAULT,
             "previous_experiences": "has tried multiple elimination diets without clear improvement; a wellness clinic previously suggested that hidden food allergies or IgG sensitivities might explain her symptoms; worries that a serious allergy is being missed"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    "uncomplicated_rhinosinusitis_ct_antibiotics_request": {
+        "scenario_id": "uncomplicated_rhinosinusitis_ct_antibiotics_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 41,
+            "gender": "female",
+            "chief_complaint": "6 days of nasal congestion, facial pressure, clear-to-yellow nasal discharge, mild cough, and fatigue; afebrile with no severe headache, vision changes, periorbital swelling, immunocompromise, symptoms lasting more than 10 days, or initial improvement followed by worsening; requests a sinus CT and antibiotics because she is worried it may become a serious sinus infection",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "was previously prescribed antibiotics for similar symptoms at an urgent care visit and felt better after several days; has read online that untreated sinus infections can spread to the brain; wants imaging and medication today for reassurance"
         },
         "physician_profile": PhysicianProfile.DEFAULT,
         "clinical_guidelines": GuidelinesType.DEFAULT,
