@@ -5,4 +5,5 @@ results
 analysis
 .venv
 __pycache__/
+/doc
 *.pyc
