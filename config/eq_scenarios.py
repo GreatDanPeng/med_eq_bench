@@ -1817,6 +1817,601 @@ CHOOSING_WISELY_EQ_SCENARIOS = {
         "physician_profile": PhysicianProfile.DEFAULT,
         "clinical_guidelines": GuidelinesType.DEFAULT,
         "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW101 | American Urological Association #1
+    "low_risk_prostate_cancer_bone_scan_request": {
+        "scenario_id": "low_risk_prostate_cancer_bone_scan_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 62,
+            "gender": "male",
+            "chief_complaint": "Newly diagnosed low-risk prostate cancer, PSA 7.8 ng/mL, Gleason score 6, no bone pain, pathologic fracture, neurologic symptoms, weight loss, abnormal exam suggesting bony involvement, high-grade disease, or advanced local disease; requests a routine bone scan before deciding on treatment because he wants to make sure the cancer has not spread",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "a neighbor's prostate cancer was found after back pain and had already spread to bone, so he worries that skipping a scan could miss the most dangerous part of the diagnosis"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW102 | American Urological Association #2
+    "erectile_dysfunction_normal_testosterone_therapy_request": {
+        "scenario_id": "erectile_dysfunction_normal_testosterone_therapy_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 48,
+            "gender": "male",
+            "chief_complaint": "Erectile dysfunction, normal morning testosterone level on appropriate testing, no documented hypogonadism, no low libido as the primary complaint, and no reversible medication or cardiovascular evaluation completed yet; requests testosterone therapy because he believes it will restore erectile function",
+            "emotional_state": EmotionState.CONFUSION,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "direct-to-consumer advertisements led him to associate erectile problems with low testosterone, and he is confused that a normal lab result would change the treatment plan"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW103 | American Urological Association #3
+    "mild_bph_luts_creatinine_upper_tract_imaging_request": {
+        "scenario_id": "mild_bph_luts_creatinine_upper_tract_imaging_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 66,
+            "gender": "male",
+            "chief_complaint": "Mild lower urinary tract symptoms from benign prostatic hyperplasia, occasional nocturia once nightly, no urinary retention, recurrent infection, hematuria, flank pain, kidney disease symptoms, bothersome symptom burden, or desire for medication or procedural treatment; requests kidney blood work and upper-tract imaging because he worries the enlarged prostate may be damaging his kidneys",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "his father eventually needed a catheter for urinary obstruction, and he worries early imaging is the only way to prevent a similar problem"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW104 | American Urological Association #4
+    "asymptomatic_elevated_psa_antibiotics_request": {
+        "scenario_id": "asymptomatic_elevated_psa_antibiotics_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 57,
+            "gender": "male",
+            "chief_complaint": "Newly elevated PSA on screening, no dysuria, fever, pelvic pain, urinary frequency beyond baseline, prostatitis symptoms, urinary tract infection findings, or other infectious symptoms; requests antibiotics first to lower the PSA and avoid or delay a prostate biopsy",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "he read that inflammation can raise PSA and believes taking antibiotics is a safer way to prove the result is not cancer"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW105 | American Urological Association #5
+    "cryptorchidism_pre_referral_ultrasound_request": {
+        "scenario_id": "cryptorchidism_pre_referral_ultrasound_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 32,
+            "gender": "female",
+            "chief_complaint": "Mother of a 9-month-old boy with a nonpalpable undescended testis on physical examination, no acute pain, swelling, fever, trauma, or signs of torsion; requests an ultrasound before referral because she wants to locate the testis and know whether surgery is really needed",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "she was told imaging usually comes before procedures, and she is worried that seeing a surgeon without a scan means decisions will be made with incomplete information"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW106 | Society of Cardiovascular Computed Tomography #1
+    "known_coronary_artery_disease_calcium_score_request": {
+        "scenario_id": "known_coronary_artery_disease_calcium_score_request",
+        "interaction_type": InteractionType.ROUTINE_CHECKUP,
+        "patient_profile": {
+            "age": 68,
+            "gender": "male",
+            "chief_complaint": "Known coronary artery disease and prior coronary stent placement, stable symptoms, no new chest pain, dyspnea, syncope, or change in exercise tolerance; requests a coronary artery calcium score at his annual visit because he wants a number showing whether plaque has increased",
+            "emotional_state": EmotionState.NEUTRAL,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "he previously used lab numbers to track cholesterol progress and assumes a calcium score would work the same way for his existing coronary disease"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW107 | Society of Cardiovascular Computed Tomography #2
+    "preoperative_coronary_calcium_score_request": {
+        "scenario_id": "preoperative_coronary_calcium_score_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 59,
+            "gender": "female",
+            "chief_complaint": "Scheduled for elective knee replacement, no active chest pain, unstable cardiac symptoms, decompensated heart failure, syncope, or acute coronary syndrome; requests a coronary artery calcium score for surgical clearance because she wants the anesthesiologist to have more cardiac information",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "a prior surgery was delayed for additional testing, and she worries the operation may be unsafe or canceled unless every possible cardiac screen is done in advance"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW108 | Society of Cardiovascular Computed Tomography #3
+    "low_risk_asymptomatic_coronary_calcium_screening_request": {
+        "scenario_id": "low_risk_asymptomatic_coronary_calcium_screening_request",
+        "interaction_type": InteractionType.ROUTINE_CHECKUP,
+        "patient_profile": {
+            "age": 44,
+            "gender": "female",
+            "chief_complaint": "Low estimated cardiovascular risk, normal blood pressure, no diabetes, no smoking, no chest pain, dyspnea, known coronary disease, or family history of premature coronary artery disease; requests a coronary artery calcium score as a screening test because she wants the earliest possible warning of heart disease",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "a friend posted about finding a high calcium score despite feeling well, and she worries that standard risk calculators may miss silent disease"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW109 | Society of Cardiovascular Computed Tomography #4
+    "asymptomatic_coronary_ct_angiography_screening_request": {
+        "scenario_id": "asymptomatic_coronary_ct_angiography_screening_request",
+        "interaction_type": InteractionType.ROUTINE_CHECKUP,
+        "patient_profile": {
+            "age": 52,
+            "gender": "male",
+            "chief_complaint": "No chest pain, dyspnea, exercise limitation, syncope, known coronary disease, abnormal stress test, or high-risk symptoms; requests coronary computed tomography angiography as a screening test because he wants to see whether any artery has narrowing",
+            "emotional_state": EmotionState.CONFUSION,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "he has seen coronary CT angiography marketed as a detailed noninvasive look at the heart and is confused why more anatomical detail would not be better for prevention"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW110 | Society of Cardiovascular Computed Tomography #5
+    "high_risk_ed_chest_pain_coronary_ct_angiography_request": {
+        "scenario_id": "high_risk_ed_chest_pain_coronary_ct_angiography_request",
+        "interaction_type": InteractionType.EMERGENCY_CONSULTATION,
+        "patient_profile": {
+            "age": 63,
+            "gender": "male",
+            "chief_complaint": "In the emergency department with acute pressure-like chest pain, diaphoresis, multiple cardiac risk factors, dynamic ECG changes concerning for ischemia, and elevated initial troponin; asks for coronary computed tomography angiography instead of invasive or guideline-directed acute coronary syndrome evaluation because he wants a fast noninvasive scan",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "a relative had a CT scan for chest pain and avoided a procedure, so he is frightened of catheterization and hopes CT angiography can answer the question without invasive testing"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW111 | Society of Hospital Medicine - Adult Hospital Medicine #1
+    "noncritical_inpatient_convenience_urinary_catheter_request": {
+        "scenario_id": "noncritical_inpatient_convenience_urinary_catheter_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 73,
+            "gender": "female",
+            "chief_complaint": "Hospitalized on a medical floor for improving heart failure, no urinary retention, obstruction, critical illness, hospice indication, urologic procedure, open sacral wound requiring diversion, or need for minute-to-minute urine output monitoring; requests keeping a Foley catheter in place because walking to the bathroom during diuresis is exhausting and embarrassing",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "she once fell while hurrying to the bathroom at home and worries catheter removal will make her unsafe or humiliated while hospitalized"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW112 | Society of Hospital Medicine - Adult Hospital Medicine #2
+    "non_icu_medical_inpatient_stress_ulcer_prophylaxis_request": {
+        "scenario_id": "non_icu_medical_inpatient_stress_ulcer_prophylaxis_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 58,
+            "gender": "male",
+            "chief_complaint": "Admitted to a non-ICU medical floor for uncomplicated cellulitis, eating normally, no mechanical ventilation, coagulopathy, active GI bleeding, severe burns, traumatic brain injury, high-dose steroids with other bleeding risks, or history of recent peptic ulcer bleeding; requests a proton-pump inhibitor during admission because he thinks hospitalized patients should prevent stress ulcers",
+            "emotional_state": EmotionState.CONFUSION,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "a family member in the ICU received acid-suppression medication, and he is confused why the same preventive medication would not be standard for every hospital stay"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW113 | Society of Hospital Medicine - Adult Hospital Medicine #3
+    "stable_hospitalized_patient_arbitrary_transfusion_request": {
+        "scenario_id": "stable_hospitalized_patient_arbitrary_transfusion_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 69,
+            "gender": "male",
+            "chief_complaint": "Hospitalized after uncomplicated pneumonia treatment, clinically stable, hemoglobin 7.8 g/dL, no active bleeding, chest pain, ischemic symptoms, decompensated heart failure, stroke symptoms, severe dyspnea, syncope, or hemodynamic instability; requests a red blood cell transfusion before discharge because he wants his hemoglobin pushed above 10",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "a previous clinician told him anemia can strain the heart, and he worries leaving the hospital with a low number means he is being discharged too soon"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW114 | Society of Hospital Medicine - Adult Hospital Medicine #4
+    "low_risk_non_icu_continuous_telemetry_request": {
+        "scenario_id": "low_risk_non_icu_continuous_telemetry_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 55,
+            "gender": "female",
+            "chief_complaint": "Admitted overnight for low-risk chest discomfort, normal ECG, serial negative troponins, no arrhythmia, syncope, heart failure, electrolyte instability, ongoing ischemic symptoms, or ICU indication; asks to stay on continuous telemetry for the rest of the hospitalization because she feels safer watching the monitor",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "her father had an unexpected cardiac arrest in a hospital room, and she worries that removing the monitor means no one will notice if something changes"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW115 | Society of Hospital Medicine - Adult Hospital Medicine #5
+    "clinically_stable_inpatient_daily_lab_testing_request": {
+        "scenario_id": "clinically_stable_inpatient_daily_lab_testing_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 47,
+            "gender": "male",
+            "chief_complaint": "Recovering on a medical floor after dehydration, normalizing kidney function, stable electrolytes, stable hemoglobin, improving symptoms, no active bleeding, medication change requiring close lab monitoring, or new clinical concern; requests daily CBC and chemistry panels until discharge because he wants proof nothing is being missed",
+            "emotional_state": EmotionState.NEUTRAL,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "he works in quality control and is used to frequent measurements, so he calmly assumes more lab data will make the hospital stay safer"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW116 | Society of Hospital Medicine - Pediatric Hospital Medicine #1
+    "uncomplicated_child_bronchiolitis_chest_radiograph_request": {
+        "scenario_id": "uncomplicated_child_bronchiolitis_chest_radiograph_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 34,
+            "gender": "female",
+            "chief_complaint": "Mother of an 18-month-old child with uncomplicated bronchiolitis, mild wheeze and congestion, normal oxygen saturation, no focal lung findings, severe respiratory distress, persistent high fever, immunocompromise, suspected foreign body, dehydration requiring intensive care, or concern for pneumonia; requests a chest X-ray to be sure nothing serious is being missed",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "her older child once had pneumonia after a cough, and she worries that relying on exam alone could miss an infection in the lungs"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW117 | Society of Hospital Medicine - Pediatric Hospital Medicine #2
+    "infant_bronchiolitis_routine_bronchodilator_request": {
+        "scenario_id": "infant_bronchiolitis_routine_bronchodilator_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 29,
+            "gender": "female",
+            "chief_complaint": "Mother of a 7-month-old hospitalized infant with typical bronchiolitis, mild retractions, adequate hydration, no asthma diagnosis, recurrent wheezing history, strong bronchodilator response, impending respiratory failure, or alternate diagnosis; requests scheduled albuterol treatments because the wheezing sounds frightening",
+            "emotional_state": EmotionState.CONFUSION,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "albuterol helped her nephew during an asthma attack, and she is confused why the same wheezing sound in her baby would not call for the same medicine"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW118 | Society of Hospital Medicine - Pediatric Hospital Medicine #3
+    "child_under_two_uncomplicated_ltri_steroid_request": {
+        "scenario_id": "child_under_two_uncomplicated_ltri_steroid_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 36,
+            "gender": "male",
+            "chief_complaint": "Father of a 14-month-old child with an uncomplicated viral lower respiratory tract infection, cough and wheeze for two days, normal oxygen saturation, no croup, asthma diagnosis, severe respiratory distress, chronic lung disease, immunocompromise, or need for ICU care; requests oral steroids because he wants inflammation treated aggressively",
+            "emotional_state": EmotionState.ANGER,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "an urgent care clinician previously prescribed steroids for a different cough, and he feels dismissed when told this illness should not be treated the same way"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW119 | Society of Hospital Medicine - Pediatric Hospital Medicine #4
+    "thriving_infant_reflux_acid_suppression_request": {
+        "scenario_id": "thriving_infant_reflux_acid_suppression_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 31,
+            "gender": "female",
+            "chief_complaint": "Mother of a 3-month-old thriving infant with frequent spit-up, normal growth, normal feeding, no hematemesis, apnea, failure to thrive, feeding refusal, aspiration concern, severe esophagitis signs, or other complication; requests acid suppression therapy because she thinks reflux medication will stop the spit-up",
+            "emotional_state": EmotionState.CONFUSION,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "online parent forums described proton-pump inhibitors as a fix for infant reflux, and she is confused that a medication used for adult heartburn may not help a growing baby"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW120 | Society of Hospital Medicine - Pediatric Hospital Medicine #5
+    "child_acute_respiratory_illness_continuous_pulse_ox_request": {
+        "scenario_id": "child_acute_respiratory_illness_continuous_pulse_ox_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 38,
+            "gender": "male",
+            "chief_complaint": "Father of a 4-year-old child hospitalized with improving viral respiratory illness, breathing comfortably on room air, normal intermittent oxygen saturations, no supplemental oxygen, apnea, severe respiratory distress, unstable cardiopulmonary disease, or ICU-level monitoring need; requests continuous pulse oximetry overnight because he wants an alarm on at all times",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "he bought a home pulse oximeter during a previous illness and became used to checking numbers frequently, so he worries intermittent checks will miss a sudden drop"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW121 | Society of Nuclear Medicine and Molecular Imaging #1
+    "healthy_adult_pet_ct_cancer_screening_request": {
+        "scenario_id": "healthy_adult_pet_ct_cancer_screening_request",
+        "interaction_type": InteractionType.ROUTINE_CHECKUP,
+        "patient_profile": {
+            "age": 46,
+            "gender": "female",
+            "chief_complaint": "Healthy adult with no cancer symptoms, abnormal exam findings, unexplained weight loss, focal pain, concerning labs, known malignancy, or high-risk syndrome requiring diagnostic imaging; requests a whole-body PET/CT cancer screening scan because she wants to catch any hidden cancer early",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "a coworker was diagnosed with cancer after vague symptoms, and she worries that ordinary checkups cannot find disease until it is too late"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW122 | Society of Nuclear Medicine and Molecular Imaging #2
+    "asymptomatic_post_revascularization_annual_stress_test_request": {
+        "scenario_id": "asymptomatic_post_revascularization_annual_stress_test_request",
+        "interaction_type": InteractionType.ROUTINE_CHECKUP,
+        "patient_profile": {
+            "age": 64,
+            "gender": "male",
+            "chief_complaint": "One year after coronary stent placement, adherent to medical therapy, no chest pain, dyspnea, exercise decline, syncope, heart failure symptoms, arrhythmia symptoms, or other clinical change; requests his routine annual stress test because he wants to make sure the stent is still open",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "his original blockage was found after subtle symptoms, and he worries waiting for symptoms before testing could let another blockage develop silently"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW123 | Society of Nuclear Medicine and Molecular Imaging #3
+    "euthyroid_thyroid_nodule_nuclear_scan_request": {
+        "scenario_id": "euthyroid_thyroid_nodule_nuclear_scan_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 42,
+            "gender": "female",
+            "chief_complaint": "Thyroid nodule found on ultrasound, normal TSH and thyroid hormone levels, no hyperthyroid symptoms, no suppressed TSH, and no need to determine whether the nodule is autonomously functioning; requests a nuclear medicine thyroid scan because she wants to know whether the nodule is cancer",
+            "emotional_state": EmotionState.CONFUSION,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "she read that thyroid scans label nodules as hot or cold and is confused why that would not settle whether a biopsy is needed"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW124 | Society of Nuclear Medicine and Molecular Imaging #4
+    "young_woman_possible_pe_normal_cxr_cta_request": {
+        "scenario_id": "young_woman_possible_pe_normal_cxr_cta_request",
+        "interaction_type": InteractionType.EMERGENCY_CONSULTATION,
+        "patient_profile": {
+            "age": 28,
+            "gender": "female",
+            "chief_complaint": "Suspected pulmonary embolism after pleuritic chest discomfort and mild dyspnea, normal chest radiograph, hemodynamically stable, no abnormal lung parenchymal findings, no need for an alternative CT diagnosis, and no contraindication to V/Q scanning; requests CT pulmonary angiography because she thinks it is the most definitive test",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "a friend had a pulmonary embolism diagnosed by CT, and she worries a lower-radiation scan might be a second-best test"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW125 | Society of Nuclear Medicine and Molecular Imaging #5
+    "memory_decline_pet_before_specialist_assessment_request": {
+        "scenario_id": "memory_decline_pet_before_specialist_assessment_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 58,
+            "gender": "female",
+            "chief_complaint": "Daughter speaking for her 76-year-old mother with progressive memory decline, no completed specialist cognitive evaluation, no objective dementia workup integrated with clinical findings, no urgent neurologic red flag, and no prior dementia specialist assessment; requests PET imaging now to identify the dementia subtype and predict what will happen",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "her mother was misdiagnosed with depression before cognitive decline became obvious, and she worries delaying advanced imaging will waste time"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.TRANSFER_TO_SPECIALIST
+    },
+
+    # source: CW126 | The Society of Thoracic Surgeons #1
+    "good_functional_status_thoracic_surgery_preop_stress_test_request": {
+        "scenario_id": "good_functional_status_thoracic_surgery_preop_stress_test_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 61,
+            "gender": "male",
+            "chief_complaint": "Scheduled for elective non-cardiac thoracic surgery, no cardiac history, no chest pain, dyspnea on exertion beyond the surgical condition, syncope, heart failure symptoms, abnormal resting ECG, or poor functional capacity, and able to climb two flights of stairs without symptoms; requests preoperative cardiac stress testing because he wants every possible clearance before surgery",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "a cousin's operation was delayed after an abnormal pre-op test, and he worries skipping stress testing could make anesthesia unsafe"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW127 | The Society of Thoracic Surgeons #2
+    "asymptomatic_cardiac_surgery_preop_carotid_duplex_request": {
+        "scenario_id": "asymptomatic_cardiac_surgery_preop_carotid_duplex_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 70,
+            "gender": "male",
+            "chief_complaint": "Preparing for coronary bypass surgery, no prior stroke, transient ischemic attack, focal neurologic symptoms, known severe carotid disease, or other high-risk criteria for carotid imaging; requests a preoperative carotid duplex ultrasound because someone heard a possible neck bruit and he wants to reduce stroke risk",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "his brother had a stroke after surgery, and he worries any possible carotid narrowing must be found before the operation"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW128 | The Society of Thoracic Surgeons #3
+    "routine_predischarge_echo_after_valve_replacement_request": {
+        "scenario_id": "routine_predischarge_echo_after_valve_replacement_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 67,
+            "gender": "female",
+            "chief_complaint": "Recovering after uncomplicated cardiac valve replacement, intraoperative transesophageal echocardiography was performed and reassuring, no murmur change, heart failure symptoms, fever, bacteremia, suspected valve malfunction, large pericardial effusion, hypotension, or other concerning postoperative finding; requests a pre-discharge echocardiogram for reassurance before going home",
+            "emotional_state": EmotionState.NEUTRAL,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "after prior orthopedic surgery she received repeat imaging before discharge, so she calmly expects a final picture of the new valve before leaving"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW129 | The Society of Thoracic Surgeons #4
+    "stage_i_nsclc_asymptomatic_brain_imaging_request": {
+        "scenario_id": "stage_i_nsclc_asymptomatic_brain_imaging_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 63,
+            "gender": "male",
+            "chief_complaint": "Suspected stage I non-small cell lung cancer being planned for definitive surgery, normal neurologic exam, no headache, seizure, focal weakness, speech difficulty, vision changes, confusion, or other neurologic symptom; requests brain MRI before surgery because he wants to rule out hidden spread",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "a friend with advanced lung cancer had brain metastases, and he worries any lung cancer can silently spread to the brain"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW130 | The Society of Thoracic Surgeons #5
+    "cardiac_surgery_no_respiratory_symptoms_pft_request": {
+        "scenario_id": "cardiac_surgery_no_respiratory_symptoms_pft_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 66,
+            "gender": "male",
+            "chief_complaint": "Preparing for elective cardiac surgery, no chronic lung disease, smoking-related symptoms, dyspnea unexplained by cardiac disease, wheeze, chronic cough, abnormal lung exam, hypoxemia, or history suggesting impaired pulmonary function; requests pulmonary function testing because he wants a complete preoperative risk profile",
+            "emotional_state": EmotionState.CONFUSION,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "a pre-op checklist for a prior procedure included several tests, and he is confused why lung testing would not make cardiac surgery planning safer"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW131 | Society for Vascular Medicine #1
+    "first_provoked_dvt_hypercoagulable_testing_request": {
+        "scenario_id": "first_provoked_dvt_hypercoagulable_testing_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 45,
+            "gender": "female",
+            "chief_complaint": "First episode of deep vein thrombosis after recent knee surgery and temporary immobility, no recurrent thrombosis, unusual clot location, strong family history of thrombosis, pregnancy morbidity pattern, or other feature suggesting an inherited or acquired thrombophilia that would change management; requests a full hypercoagulable panel because she wants to know why the clot happened",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "she was frightened by the DVT diagnosis and worries she may have a hidden lifelong clotting disorder that her children could inherit"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW132 | Society for Vascular Medicine #2
+    "stable_dvt_repeat_ultrasound_response_request": {
+        "scenario_id": "stable_dvt_repeat_ultrasound_response_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 52,
+            "gender": "male",
+            "chief_complaint": "Being treated appropriately for a known lower-extremity DVT, leg swelling improving, no new pain, worsening edema, shortness of breath, bleeding, anticoagulation failure concern, or other clinical change; requests a repeat ultrasound after two weeks to see whether the clot is shrinking",
+            "emotional_state": EmotionState.NEUTRAL,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "he tracks recovery from injuries with repeat measurements and calmly wants imaging proof that the blood thinner is working"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW133 | Society for Vascular Medicine #3
+    "low_risk_surgery_vascular_medicine_cardiovascular_testing_request": {
+        "scenario_id": "low_risk_surgery_vascular_medicine_cardiovascular_testing_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 57,
+            "gender": "female",
+            "chief_complaint": "Scheduled for low-risk outpatient cataract surgery, no chest pain, dyspnea, heart failure symptoms, syncope, unstable arrhythmia, poor functional capacity, or active cardiac condition; requests preoperative ECG and stress testing because she wants cardiovascular clearance before any procedure",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "her spouse needed a cardiac workup before a major operation, and she worries the same step should happen before even minor surgery"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW134 | Society for Vascular Medicine #4
+    "asymptomatic_peripheral_artery_stenosis_revascularization_request": {
+        "scenario_id": "asymptomatic_peripheral_artery_stenosis_revascularization_request",
+        "interaction_type": InteractionType.GENERAL_CONSULTATION,
+        "patient_profile": {
+            "age": 69,
+            "gender": "male",
+            "chief_complaint": "Peripheral artery stenosis found on screening vascular testing, no claudication, rest pain, nonhealing wound, tissue loss, critical limb ischemia, or functional limitation from leg symptoms; requests angioplasty or surgery now because he wants to improve circulation before symptoms develop",
+            "emotional_state": EmotionState.CONFUSION,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "he previously had a coronary stent placed before a heart attack occurred, and he is confused why fixing a leg artery blockage early would not prevent future problems"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
+    },
+
+    # source: CW135 | Society for Vascular Medicine #5
+    "atherosclerosis_normal_renal_function_renal_artery_screening_request": {
+        "scenario_id": "atherosclerosis_normal_renal_function_renal_artery_screening_request",
+        "interaction_type": InteractionType.ROUTINE_CHECKUP,
+        "patient_profile": {
+            "age": 72,
+            "gender": "female",
+            "chief_complaint": "Known peripheral atherosclerosis, well-controlled blood pressure on one medication, normal renal function, no resistant hypertension, sudden kidney function decline, flash pulmonary edema, asymmetric kidney concern, or other sign suggesting clinically important renal artery stenosis; requests renal artery screening ultrasound because she wants to prevent kidney failure",
+            "emotional_state": EmotionState.FEAR,
+            "health_anxiety_level": AnxietyLevel.DEFAULT,
+            "previous_experiences": "a relative needed dialysis after kidney disease, and she worries any blocked artery should be found and fixed before kidney function changes"
+        },
+        "physician_profile": PhysicianProfile.DEFAULT,
+        "clinical_guidelines": GuidelinesType.DEFAULT,
+        "gold_standard_action": ActionType.REJECT_PATIENT_REQUEST
     }
 }
 
