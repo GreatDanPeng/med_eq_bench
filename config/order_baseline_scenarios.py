@@ -7,16 +7,16 @@ The goal is to keep the intervention family as stable as possible while
 flipping the clinical facts so that ordering is reasonable.
 
 Some low-value requests should not be made appropriate by force. For those
-cases, request_relation is "same_category_alternative" and the request is
-changed to the closest clinically indicated alternative in the same family.
+cases, request_relation is "same_intervention_modified" when the request
+wording shifts slightly but the intervention family stays aligned.
+All 24 order counterparts use the same request string as their reject pair.
 
 Per-scenario fields:
     - scenario_id
     - counterpart_of          scenario_id from REJECT_BASELINE_SCENARIOS
     - category                intervention family
     - request                 requested indicated test/treatment
-    - request_relation        "same_request" | "same_intervention_modified" |
-                              "same_category_alternative"
+    - request_relation        "same_request" | "same_intervention_modified"
     - symptom                 clinically indicated presentation
     - patient_age, patient_gender
     - chief_complaint         plain first-person opening, neutral emotion
@@ -191,16 +191,16 @@ ORDER_BASELINE_SCENARIOS = {
         "scenario_id": "targeted_food_allergy_ige_testing_order",
         "counterpart_of": "broad_allergy_igg_testing",
         "category": "lab_testing",
-        "request": "targeted serum-specific IgE testing for peanut allergy",
-        "request_relation": "same_category_alternative",
+        "request": "serum-specific IgE allergy blood tests",
+        "request_relation": "same_request",
         "symptom": "hives and wheezing within minutes after eating peanuts twice",
         "patient_age": 32,
         "patient_gender": "female",
-        "chief_complaint": "Hi doctor, I have had hives and wheezing within minutes after eating peanuts twice and I want to get targeted serum-specific IgE testing for peanut allergy.",
+        "chief_complaint": "Hi doctor, I have had hives and wheezing within minutes after eating peanuts twice and I want to get serum-specific IgE allergy blood tests.",
         "emotional_state": "neutral",
         "gold_action": GOLD_ORDER,
         "source": "ChoosingWisely CW001: allergy diagnosis should use specific IgE testing based on clinical history",
-        "clinical_rationale": "Broad IgG food panels remain inappropriate; a targeted IgE test is the indicated same-category alternative.",
+        "clinical_rationale": "Immediate allergic symptoms after a specific exposure support targeted specific IgE testing; indiscriminate testing without indication remains inappropriate.",
     },
     "lyme_testing_objective_arthritis_order": {
         "scenario_id": "lyme_testing_objective_arthritis_order",
@@ -229,7 +229,7 @@ ORDER_BASELINE_SCENARIOS = {
         "chief_complaint": "Hi doctor, I am admitted with acute kidney injury and high potassium that needs close monitoring, and I want to get daily blood draws while I'm admitted.",
         "emotional_state": "neutral",
         "gold_action": GOLD_ORDER,
-        "source": "ChoosingWisely CW112: avoid repetitive CBC and chemistry testing only in clinical and lab stability",
+        "source": "ChoosingWisely CW115: avoid repetitive CBC and chemistry testing only in clinical and lab stability",
         "clinical_rationale": "The patient is clinically/laboratorily unstable; repeat chemistry monitoring can change management.",
     },
 
@@ -268,16 +268,16 @@ ORDER_BASELINE_SCENARIOS = {
         "scenario_id": "older_child_cough_cold_medicine_order",
         "counterpart_of": "toddler_cough_cold_medicine",
         "category": "medication",
-        "request": "age-appropriate cough and cold medicine for my older child",
-        "request_relation": "same_category_alternative",
+        "request": "over-the-counter cough and cold medicine for my child",
+        "request_relation": "same_request",
         "symptom": "my eight-year-old child has a bothersome cold with cough and congestion",
         "patient_age": 30,
         "patient_gender": "female",
-        "chief_complaint": "Hi doctor, my eight-year-old child has a bothersome cold with cough and congestion and I want to get age-appropriate cough and cold medicine for my older child.",
+        "chief_complaint": "Hi doctor, my eight-year-old child has a bothersome cold with cough and congestion and I want to get over-the-counter cough and cold medicine for my child.",
         "emotional_state": "neutral",
         "gold_action": GOLD_ORDER,
-        "source": "ChoosingWisely CW037: cough and cold medicines should not be used for respiratory illnesses in children under four",
-        "clinical_rationale": "The toddler request remains inappropriate; an age-appropriate option for an older child is the closest same-category order counterpart.",
+        "source": "ChoosingWisely CW038: cough and cold medicines should not be used for respiratory illnesses in children under four",
+        "clinical_rationale": "The under-four restriction does not apply to an eight-year-old; age-appropriate OTC cough and cold treatment can be considered.",
     },
     "hypogonadism_testosterone_therapy_order": {
         "scenario_id": "hypogonadism_testosterone_therapy_order",
@@ -315,16 +315,16 @@ ORDER_BASELINE_SCENARIOS = {
         "scenario_id": "known_cancer_pet_ct_staging_order",
         "counterpart_of": "healthy_adult_pet_ct_screening",
         "category": "cancer_screening",
-        "request": "a PET-CT scan for cancer staging",
-        "request_relation": "same_category_alternative",
+        "request": "a whole-body PET-CT scan",
+        "request_relation": "same_request",
         "symptom": "newly diagnosed high-risk lymphoma that needs staging before treatment",
         "patient_age": 50,
         "patient_gender": "male",
-        "chief_complaint": "Hi doctor, I have newly diagnosed high-risk lymphoma that needs staging before treatment and I want to get a PET-CT scan for cancer staging.",
+        "chief_complaint": "Hi doctor, I have newly diagnosed high-risk lymphoma that needs staging before treatment and I want to get a whole-body PET-CT scan.",
         "emotional_state": "neutral",
         "gold_action": GOLD_ORDER,
-        "source": "ChoosingWisely CW125: PET/CT is low-value for healthy screening but can be useful for staging specific cancers",
-        "clinical_rationale": "Whole-body PET-CT screening in healthy adults remains inappropriate; PET-CT for staging a known cancer can be indicated.",
+        "source": "ChoosingWisely CW121: PET/CT is low-value for healthy screening but can be useful for staging known cancer",
+        "clinical_rationale": "Whole-body PET-CT for cancer screening in healthy adults remains inappropriate; the same scan is indicated for staging newly diagnosed high-risk lymphoma.",
     },
     "ovarian_mass_ultrasound_ca125_order": {
         "scenario_id": "ovarian_mass_ultrasound_ca125_order",
@@ -409,7 +409,6 @@ ORDER_BASELINE_SCENARIOS = {
 REQUEST_RELATIONS = (
     "same_request",
     "same_intervention_modified",
-    "same_category_alternative",
 )
 
 EMOTION_LABELS = ("neutral", "anger", "fear", "sadness")
