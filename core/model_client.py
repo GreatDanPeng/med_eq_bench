@@ -2,10 +2,13 @@
 Unified model client for the clinical-agent sycophancy benchmark.
 ==================================================================
 
-Everything goes through one OpenAI-compatible interface (OpenRouter), so the
-physician (model under test) and the patient (roleplay model) are called the
-exact same way and only the `model` string differs. This keeps cross-model
-comparison fair: same adapter, same message plumbing, same tool protocol.
+Every model is called through the same OpenAI-compatible adapter (same
+message plumbing, same tool protocol) so cross-model comparison stays fair --
+only the `model` string and which client/platform it's routed through differ.
+Most models go through OpenRouter (make_client); a small set of
+medical-specialty models (config.models.MEDICAL_PLATFORM_MODELS, e.g.
+medgemma-4b-it) go through a separate endpoint at dr7.ai instead
+(make_dr7_client). client_for_model(model) picks the right one.
 
 Two call styles are supported:
   - chat():  a plain conversational turn (patient replies; physician questions).
@@ -15,14 +18,17 @@ Reasoning is preserved across turns using OpenRouter's `reasoning_details`
 pass-back pattern (see call_model / append_assistant_turn), so a model that
 "thinks" continues from where it left off instead of restarting each turn.
 
-Set OPENROUTER_API_KEY in the environment before running.
+Set OPENROUTER_API_KEY (OpenRouter) and/or DR7_KEY (dr7.ai) in the
+environment before running.
 """
 
 from __future__ import annotations
 
 import os
 import json
+import re
 import time
+import uuid
 from dataclasses import dataclass, field
 from typing import Any, Optional
 
@@ -33,6 +39,8 @@ from openai import (
     InternalServerError,
     RateLimitError,
 )
+
+from config.tool_schemas import TOOL_NAMES
 
 # Transient failures worth a short retry: the response body got cut off
 # mid-stream (raw json.JSONDecodeError, not wrapped by the SDK) or the
@@ -84,6 +92,136 @@ def make_client(api_key: Optional[str] = None) -> OpenAI:
     return OpenAI(base_url="https://openrouter.ai/api/v1", api_key=key)
 
 
+def make_dr7_client(api_key: Optional[str] = None) -> OpenAI:
+    """Client for the dr7.ai medical-model platform (e.g. medgemma-4b-it) --
+    a separate OpenAI-compatible endpoint outside OpenRouter, auth'd via
+    DR7_KEY. Reuses the same openai SDK since dr7.ai's request shape
+    (model/messages/max_tokens/temperature posted to .../chat/completions)
+    matches the OpenAI convention; base_url points at the "medical" path so
+    the SDK's implicit "/chat/completions" suffix lands on
+    https://dr7.ai/api/v1/medical/chat/completions.
+    """
+    key = api_key or os.environ.get("DR7_KEY")
+    if not key:
+        raise RuntimeError("Set DR7_KEY (or pass api_key=...) for dr7.ai medical models.")
+    return OpenAI(base_url="https://dr7.ai/api/v1/medical", api_key=key)
+
+
+def client_for_model(model: str, api_key: Optional[str] = None) -> OpenAI:
+    """Picks the right OpenAI-compatible client for `model`: a local
+    in-process HuggingFace model for config.models.LOCAL_HF_MODELS (no
+    network call -- see core.local_model_client), dr7.ai for medical-platform
+    models (config.models.MEDICAL_PLATFORM_MODELS), OpenRouter for
+    everything else.
+
+    NOTE: `model` here is the PHYSICIAN_MODELS *label* for local models
+    (e.g. "medgemma-1.5-4b"), not an OpenRouter slug -- run_encounter passes
+    PHYSICIAN_MODELS[label] as `model` to both client_for_model() and the
+    ModelConfig, and for local models that value IS the label (see
+    config/models.py)."""
+    from config.models import LOCAL_HF_MODELS, MEDICAL_PLATFORM_MODELS
+    if model in LOCAL_HF_MODELS:
+        from core.local_model_client import make_local_client
+        return make_local_client(model)
+    if model in MEDICAL_PLATFORM_MODELS:
+        return make_dr7_client(api_key=api_key)
+    return make_client(api_key=api_key)
+
+
+# Some models (observed: medgemma-4b-it via dr7.ai) don't use the OpenAI
+# `tool_calls` field at all -- they emit their "tool call" as text in the
+# message content instead, and inconsistently so (the SAME model has been
+# observed using two different styles across runs). Left unrecognized, the
+# harness treats that text as an ordinary chat message, forwards it to the
+# patient, and the encounter never actually closes (the model *thinks* it
+# called end_encounter; the harness never saw a real tool call) -- it just
+# loops on "goodbye" pleasantries until the circuit breaker or max_turns.
+# _extract_text_tool_call tries each known style in turn.
+
+# Style 1 (Gemma-ish): {"tool_code": "<name>", "parameters": {...}}, often
+# inside a ```json fence. Captures everything between the fence delimiters,
+# not by brace-matching -- the payload commonly has nested objects (e.g.
+# "parameters": {...}), which a brace-counting regex can't handle correctly.
+# json.loads() below does the actual (nesting-safe) parsing/validation.
+_JSON_FENCE_RE = re.compile(r"```(?:json)?(.*?)```", re.DOTALL)
+
+
+def _extract_json_fence_tool_call(content: str) -> Optional[dict[str, Any]]:
+    candidates = [c.strip() for c in _JSON_FENCE_RE.findall(content)]
+    stripped = content.strip()
+    if not candidates and stripped.startswith("{") and stripped.endswith("}"):
+        candidates = [stripped]
+    for candidate in candidates:
+        try:
+            obj = json.loads(candidate)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(obj, dict) and "tool_code" in obj:
+            return {"name": obj["tool_code"], "arguments": obj.get("parameters") or {}}
+    return None
+
+
+# Style 2 (bare inline call): `end_encounter(summary: some text, more text)`,
+# optionally preceded by ordinary prose, always at the end of the message.
+# Anchored on a real, known tool name so it can't misfire on ordinary prose.
+# Splits args on commas only when what follows looks like the start of a new
+# `key:` pair -- so a comma inside a natural-language value (e.g. "mild,
+# dull, band-like headaches") does not get mistaken for an argument boundary.
+_INLINE_CALL_RE = re.compile(
+    r"\b(" + "|".join(re.escape(n) for n in TOOL_NAMES) + r")\s*\((.*)\)\s*$",
+    re.DOTALL,
+)
+_KWARG_SPLIT_RE = re.compile(r",\s*(?=[a-zA-Z_]\w*\s*:)")
+_KWARG_RE = re.compile(r"^\s*([a-zA-Z_]\w*)\s*:\s*(.*)$", re.DOTALL)
+
+
+def _strip_matching_quotes(value: str) -> str:
+    """Some models write their inline-call values pre-quoted, e.g.
+    `request: "head CT scan"` -- drop one matching pair of quotes so the
+    recorded argument doesn't carry them as literal characters."""
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+        return value[1:-1].strip()
+    return value
+
+
+def _extract_inline_call_tool_call(content: str) -> Optional[dict[str, Any]]:
+    match = _INLINE_CALL_RE.search(content.strip())
+    if not match:
+        return None
+    name, args_str = match.group(1), match.group(2)
+    arguments: dict[str, Any] = {}
+    for segment in _KWARG_SPLIT_RE.split(args_str):
+        kwarg = _KWARG_RE.match(segment)
+        if kwarg:
+            arguments[kwarg.group(1)] = _strip_matching_quotes(kwarg.group(2).strip())
+    return {"name": name, "arguments": arguments}
+
+
+def _extract_text_tool_call(content: Optional[str]) -> Optional[dict[str, Any]]:
+    """Return {"name", "arguments"} if `content` contains a recognizable
+    text-embedded tool call in any known style, else None."""
+    if not content:
+        return None
+    return (_extract_json_fence_tool_call(content)
+            or _extract_inline_call_tool_call(content))
+
+
+# Some backends (observed: dr7.ai) occasionally return a generic error string
+# as `content` instead of a real error/exception -- e.g. when the request
+# shape (tools/tool_choice) isn't fully supported for that call. It isn't
+# blank, so it slips past the empty-response guard in
+# _handle_plain_message_turn and gets forwarded to the patient as if it were
+# a genuine physician utterance. Treat it like an empty/truncated turn
+# instead (see call_model below).
+_API_ERROR_PLACEHOLDERS = {"sorry, i could not process your request"}
+
+
+def _is_api_error_placeholder(content: Optional[str]) -> bool:
+    if not content:
+        return False
+    return content.strip().rstrip(".").lower() in _API_ERROR_PLACEHOLDERS
+
+
 # ---------------------------------------------------------------------------
 # Core call + reasoning preservation
 # ---------------------------------------------------------------------------
@@ -97,6 +235,37 @@ class ModelTurn:
     finish_reason: Optional[str] = None         # e.g. "stop", "length", "tool_calls"
     raw: Any = None                             # original SDK message
     protocol_failure: bool = False              # set by caller if parse fails
+
+
+def _normalize_tool_calls(msg: Any) -> list[dict[str, Any]]:
+    """Real OpenAI tool_calls if present, else a best-effort extraction from
+    text-embedded tool calls (see _extract_text_tool_call)."""
+    tool_calls: list[dict[str, Any]] = []
+    for tc in (getattr(msg, "tool_calls", None) or []):
+        # Arguments arrive as a JSON string; parse defensively.
+        try:
+            args = json.loads(tc.function.arguments or "{}")
+            parse_ok = True
+        except (json.JSONDecodeError, TypeError):
+            args = {"_raw": getattr(tc.function, "arguments", None)}
+            parse_ok = False
+        tool_calls.append({
+            "id": tc.id,
+            "name": tc.function.name,
+            "arguments": args,
+            "parse_ok": parse_ok,
+        })
+
+    if not tool_calls:
+        text_call = _extract_text_tool_call(msg.content)
+        if text_call is not None:
+            tool_calls.append({
+                "id": f"text-tool-{uuid.uuid4().hex[:8]}",
+                "name": text_call["name"],
+                "arguments": text_call["arguments"],
+                "parse_ok": True,
+            })
+    return tool_calls
 
 
 def call_model(
@@ -140,24 +309,14 @@ def call_model(
     choice = resp.choices[0]
     msg = choice.message
 
-    tool_calls: list[dict[str, Any]] = []
-    for tc in (getattr(msg, "tool_calls", None) or []):
-        # Arguments arrive as a JSON string; parse defensively.
-        try:
-            args = json.loads(tc.function.arguments or "{}")
-            parse_ok = True
-        except (json.JSONDecodeError, TypeError):
-            args = {"_raw": getattr(tc.function, "arguments", None)}
-            parse_ok = False
-        tool_calls.append({
-            "id": tc.id,
-            "name": tc.function.name,
-            "arguments": args,
-            "parse_ok": parse_ok,
-        })
+    tool_calls = _normalize_tool_calls(msg)
+
+    content = msg.content
+    if not tool_calls and _is_api_error_placeholder(content):
+        content = None  # treated as an empty/truncated turn, not real content
 
     return ModelTurn(
-        content=msg.content,
+        content=content,
         tool_calls=tool_calls,
         reasoning_details=getattr(msg, "reasoning_details", None),
         finish_reason=getattr(choice, "finish_reason", None),
@@ -211,9 +370,15 @@ def patient_reply(client: OpenAI, cfg: ModelConfig,
 
 def physician_turn(client: OpenAI, cfg: ModelConfig,
                    messages: list[dict[str, Any]],
-                   tools: list[dict[str, Any]]) -> ModelTurn:
-    """Physician turn: may return plain text (a question) or tool calls."""
-    return call_model(client, cfg, messages, tools=tools, tool_choice="auto")
+                   tools: list[dict[str, Any]],
+                   tool_choice: str | dict = "auto") -> ModelTurn:
+    """Physician turn: may return plain text (a question) or tool calls.
+
+    `tool_choice="required"` forces a tool call instead of free text -- used
+    as a circuit-breaker escalation step when the model has gotten stuck
+    returning empty/truncated turns (see core/multi_agent_system.py).
+    """
+    return call_model(client, cfg, messages, tools=tools, tool_choice=tool_choice)
 
 
 # ---------------------------------------------------------------------------

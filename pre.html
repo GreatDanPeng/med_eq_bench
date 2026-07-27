@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SAFEQ-Med</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sand:#faf3ea; --sand2:#f3e7d8; --ink:#241a12; --muted:#6b5847;
+  --amber:#e08a2c; --rust:#c04a2b; --ember:#a8321f; --moss:#4a7c59; --plum:#6b4a7a; --steel:#3b5f9e;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--sand);color:var(--ink);font-family:Inter,system-ui,sans-serif;overflow:hidden}
+h1,h2,h3,.display{font-family:Sora,sans-serif;letter-spacing:-.02em}
+.mono{font-family:'JetBrains Mono',monospace}
+.deck{position:relative;height:100vh;width:100%}
+.slide{position:absolute;inset:0;padding:clamp(20px,4vw,64px);display:flex;flex-direction:column;justify-content:center;
+  opacity:0;transform:translateY(28px) scale(.985);pointer-events:none;transition:opacity .5s ease,transform .55s cubic-bezier(.2,.8,.2,1);overflow-y:auto}
+.slide.active{opacity:1;transform:none;pointer-events:auto}
+.grain{position:fixed;inset:0;pointer-events:none;opacity:.5;
+  background:radial-gradient(900px 500px at 12% 8%,rgba(224,138,44,.18),transparent 60%),
+             radial-gradient(800px 600px at 88% 92%,rgba(192,74,43,.14),transparent 60%),
+             radial-gradient(700px 500px at 75% 10%,rgba(107,74,122,.10),transparent 60%)}
+.card{background:rgba(255,255,255,.72);border:1px solid rgba(36,26,18,.10);border-radius:20px;
+  box-shadow:0 10px 30px -18px rgba(36,26,18,.45);backdrop-filter:blur(6px)}
+.chip{display:inline-flex;align-items:center;gap:.5rem;padding:.32rem .8rem;border-radius:999px;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.bar{height:10px;border-radius:999px;background:rgba(36,26,18,.09);overflow:hidden}
+.bar>i{display:block;height:100%;border-radius:999px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.nav-btn{width:44px;height:44px;display:grid;place-items:center;border-radius:999px;border:1px solid rgba(36,26,18,.18);
+  background:rgba(255,255,255,.8);cursor:pointer;transition:.2s;font-size:18px;color:var(--ink)}
+.nav-btn:hover{background:var(--ink);color:var(--sand);border-color:var(--ink)}
+.dot{width:8px;height:8px;border-radius:999px;background:rgba(36,26,18,.2);transition:.3s;cursor:pointer}
+.dot.on{width:26px;background:var(--rust)}
+.slide::-webkit-scrollbar{width:0}
+.stage{position:relative}
+.stage .idx{position:absolute;top:-10px;left:16px;font-size:11px;font-weight:700;letter-spacing:.12em;padding:2px 9px;border-radius:999px;background:var(--ink);color:var(--sand)}
+.turn{padding:.45rem .7rem;border-radius:12px;font-size:.72rem;line-height:1.35;max-width:88%}
+.turn.p{background:rgba(107,74,122,.13);color:#4b3358;border:1px solid rgba(107,74,122,.22)}
+.turn.d{background:rgba(59,95,158,.12);color:#2a4470;border:1px solid rgba(59,95,158,.22);margin-left:auto}
+.tag{display:inline-block;font-size:.68rem;padding:.2rem .55rem;border-radius:8px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="deck" id="deck">
+
+  <!-- 1 -->
+  <section class="slide active">
+    <div class="max-w-6xl mx-auto w-full">
+      <span class="chip" style="background:rgba(192,74,43,.12);color:var(--ember)">Benchmark · Clinical Agents</span>
+      <h1 class="mt-6 font-extrabold leading-[1.02]" style="font-size:clamp(2.4rem,6vw,4.6rem)">
+        SAFEQ&#8209;Med
+      </h1>
+      <p class="mt-4 text-xl md:text-2xl font-medium" style="color:var(--muted);max-width:60ch">
+        Benchmarking sycophancy and safe clinical decision-making in LLM agents under emotional pressure.
+      </p>
+      <div class="mt-10 grid gap-4 sm:grid-cols-3">
+        <div class="card p-5">
+          <div class="mono text-3xl font-bold" style="color:var(--rust)">8</div>
+          <div class="mt-1 text-sm" style="color:var(--muted)">frontier models evaluated as physician agents</div>
+        </div>
+        <div class="card p-5">
+          <div class="mono text-3xl font-bold" style="color:var(--amber)">4</div>
+          <div class="mt-1 text-sm" style="color:var(--muted)">emotional conditions: neutral, anger, fear, sadness</div>
+        </div>
+        <div class="card p-5">
+          <div class="mono text-3xl font-bold" style="color:var(--moss)">2</div>
+          <div class="mt-1 text-sm" style="color:var(--muted)">matched clinical encounters: should&#8209;decline vs. should&#8209;order</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide">
+    <div class="max-w-6xl mx-auto w-full">
+      <h2 class="text-3xl md:text-5xl font-bold">The problem we measure</h2>
+      <p class="mt-3 text-lg" style="color:var(--muted);max-width:70ch">A clinically identical request is delivered with different affect. If the model's final action moves with the emotion rather than the evidence, that shift is sycophancy — not care.</p>
+      <div class="mt-8 grid gap-5 md:grid-cols-3">
+        <div class="card p-6 border-l-4" style="border-left-color:var(--ember)">
+          <h3 class="font-bold text-lg">Emotional escalation</h3>
+          <p class="mt-2 text-sm leading-relaxed" style="color:var(--muted)">Emotion is <em>implicit</em> and held consistent across all turns: clipped phrasing, reassurance-seeking, resignation. </p>
+        </div>
+        <div class="card p-6 border-l-4" style="border-left-color:var(--amber)">
+          <h3 class="font-bold text-lg">ChooseWisely matched clinical gold actions</h3>
+          <p class="mt-2 text-sm leading-relaxed" style="color:var(--muted)">Choosing Wisely–derived pairs fix the correct answer in advance. Clinical facts, red flags and workup results are held constant across conditions.</p>
+        </div>
+        <div class="card p-6 border-l-4" style="border-left-color:var(--plum)">
+          <h3 class="font-bold text-lg">Evaluation: both order safety and sycophancy under pressure</h3>
+          <p class="mt-2 text-sm leading-relaxed" style="color:var(--muted)">Over-granting a low-value request is harm; under-treating a genuine indication is also harm. Both arms are scored.</p>
+        </div>
+      </div>
+      <div class="mt-6 card p-5 flex flex-wrap items-center gap-3 text-sm">
+        <span class="chip" style="background:rgba(168,50,31,.12);color:var(--ember)">Should decline</span>
+        <span style="color:var(--muted)">↔</span>
+        <span class="chip" style="background:rgba(74,124,89,.14);color:var(--moss)">Should order</span>
+        <span style="color:var(--muted)">+ neutral / anger / fear / sadness overlay on the same encounter</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 — ENCOUNTER ARCHITECTURE (rebuilt from diagram) -->
+  <section class="slide">
+    <div class="max-w-7xl mx-auto w-full">
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 class="text-3xl md:text-5xl font-bold">Encounter architecture</h2>
+          <p class="mt-2 text-base md:text-lg" style="color:var(--muted)">Scenario → up to 16 conversational turns → tools → multi-judge evaluation.</p>
+        </div>
+        <span class="chip" style="background:rgba(59,95,158,.12);color:var(--steel)">Six-stage pipeline</span>
+      </div>
+
+      <div class="mt-8 grid gap-4 lg:grid-cols-12">
+
+        <!-- 1 setup -->
+        <div class="card stage p-5 lg:col-span-3">
+          <span class="idx">01 · SCENARIO SETUP</span>
+          <h3 class="mt-2 font-bold">Matched pair + condition</h3>
+          <div class="mt-3 flex items-center gap-2">
+            <span class="tag" style="background:rgba(168,50,31,.12);color:var(--ember)">Should Decline</span>
+            <span style="color:var(--muted)">↔</span>
+            <span class="tag" style="background:rgba(74,124,89,.14);color:var(--moss)">Should Order</span>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-1.5">
+            <span class="tag" style="background:rgba(36,26,18,.07);color:var(--muted)">Neutral</span>
+            <span class="tag" style="background:rgba(192,74,43,.14);color:var(--ember)">Anger</span>
+            <span class="tag" style="background:rgba(59,95,158,.12);color:var(--steel)">Fear</span>
+            <span class="tag" style="background:rgba(107,74,122,.14);color:var(--plum)">Sadness</span>
+          </div>
+          <p class="mt-3 text-xs leading-relaxed" style="color:var(--muted)">Each scenario carries chief complaint, demographics, hidden clinical facts, the request, an <span class="mono">elicit_info</span> set (OLDCARTS, safety profile, family history, red flags) and synthetic workup results.</p>
+        </div>
+
+        <!-- 2 conversation -->
+        <div class="card stage p-5 lg:col-span-6">
+          <span class="idx">02 · MULTI-TURN CONVERSATION</span>
+          <div class="mt-2 flex items-center justify-between">
+            <h3 class="font-bold">Patient LLM ⇄ Physician Agent</h3>
+            <span class="mono text-xs" style="color:var(--muted)">≤ 16 turns</span>
+          </div>
+          <div class="mt-3 flex flex-col gap-2">
+            <div class="turn p">“I've had a sore throat and cough for three days…”</div>
+            <div class="turn d">“Can you tell me more about your fever and any shortness of breath?”</div>
+            <div class="turn p">“No fever. Breathing is okay, just really annoyed this isn't getting better…”</div>
+            <div class="turn d">“Given your symptoms, I'd like to check a rapid strep test.”</div>
+            <div class="text-center text-xs" style="color:var(--muted)">··· conversation continues</div>
+          </div>
+          <div class="mt-3 grid grid-cols-2 gap-3 text-xs" style="color:var(--muted)">
+            <div><span class="font-semibold" style="color:var(--plum)">Patient LLM</span> — answers only from scenario facts; emotion implicit and consistent.</div>
+            <div><span class="font-semibold" style="color:var(--steel)">Physician agent</span> — natural-language history, reasons, decides when to reach for a tool.</div>
+          </div>
+        </div>
+
+        <!-- 5 evaluation -->
+        <div class="card stage p-5 lg:col-span-3">
+          <span class="idx">05 · MULTI-JUDGE EVAL</span>
+          <div class="mt-3 space-y-2 text-xs">
+            <div class="p-3 rounded-xl" style="background:rgba(59,95,158,.09)">
+              <div class="font-bold text-sm" style="color:var(--steel)">Clinical process quality</div>
+              <div class="mt-1" style="color:var(--muted)">History completeness (OLDCARTS) · red-flag assessment · information-seeking quality · premature decision · workup appropriateness & efficiency</div>
+            </div>
+            <div class="p-3 rounded-xl" style="background:rgba(74,124,89,.10)">
+              <div class="font-bold text-sm" style="color:var(--moss)">Clinical decision quality</div>
+              <div class="mt-1" style="color:var(--muted)">Final action appropriateness · alignment with gold action · evidence consistency after results</div>
+            </div>
+            <div class="p-3 rounded-xl" style="background:rgba(224,138,44,.13)">
+              <div class="font-bold text-sm" style="color:#8a5410">Behavioral & safety</div>
+              <div class="mt-1" style="color:var(--muted)">Sycophancy · safe redirection · inappropriate reassurance · harmful advice · emotional escalation · de-escalation & empathy</div>
+            </div>
+            <div class="p-3 rounded-xl text-center" style="background:rgba(192,74,43,.11)">
+              <span class="font-bold" style="color:var(--ember)">Overall judgment</span>
+              <span style="color:var(--muted)"> — safety & communication, 1–5</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 post-workup -->
+        <div class="card stage p-5 lg:col-span-4">
+          <span class="idx">04 · POST-WORKUP DIALOGUE</span>
+          <h3 class="mt-2 font-bold">Non-terminal by design</h3>
+          <p class="mt-2 text-xs" style="color:var(--muted)">The result returns to the physician, who explains it, asks follow-ups, and reassesses before committing.</p>
+          <div class="mt-3 flex flex-col gap-2">
+            <div class="turn d" style="max-width:100%">Doctor: “Your strep test is negative. Any sick contacts at home?”</div>
+            <div class="turn p" style="max-width:100%">Patient: “My kid had a cold last week…”</div>
+            <div class="turn d" style="max-width:100%">Doctor: “That's helpful. Based on what you've told me…”</div>
+          </div>
+          <div class="mt-3 text-xs mono" style="color:var(--plum)">↺ loops back into stage 02</div>
+        </div>
+
+        <!-- 3 tools -->
+        <div class="card stage p-5 lg:col-span-8">
+          <span class="idx">03 · CLINICAL TOOLS</span>
+          <div class="mt-2 grid gap-4 md:grid-cols-2">
+            <div class="p-4 rounded-2xl" style="background:rgba(224,138,44,.10);border:1px solid rgba(224,138,44,.3)">
+              <div class="mono font-bold text-sm" style="color:#8a5410">order_workup(test)</div>
+              <p class="mt-1 text-xs" style="color:var(--muted)">Environment returns pre-defined, gold-consistent results from <span class="mono">scenario.workup_results</span>.</p>
+              <div class="mt-2 grid grid-cols-2 gap-1 text-xs mono" style="color:var(--muted)">
+                <span>Rapid strep: Negative</span><span>CBC: WBC 6.2</span>
+                <span>CXR: no consolidation</span><span>Troponin: &lt;0.01</span>
+              </div>
+              <div class="mt-2 text-xs font-semibold" style="color:var(--plum)">Results are not terminal.</div>
+            </div>
+            <div class="p-4 rounded-2xl" style="background:rgba(74,124,89,.09);border:1px solid rgba(74,124,89,.3)">
+              <div class="font-bold text-sm" style="color:var(--moss)">Final action tools (terminal)</div>
+              <div class="mt-2 flex flex-wrap gap-1.5 mono text-xs">
+                <span class="tag" style="background:rgba(74,124,89,.16);color:var(--moss)">order_request</span>
+                <span class="tag" style="background:rgba(168,50,31,.12);color:var(--ember)">decline_request</span>
+                <span class="tag" style="background:rgba(224,138,44,.18);color:#8a5410">offer_alternative_and_counsel</span>
+                <span class="tag" style="background:rgba(107,74,122,.14);color:var(--plum)">defer</span>
+                <span class="tag" style="background:rgba(107,74,122,.14);color:var(--plum)">escalate</span>
+              </div>
+              <p class="mt-2 text-xs" style="color:var(--muted)">Calling any one of these ends the encounter. No encounter can close without one.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6 output -->
+        <div class="card stage p-5 lg:col-span-12" style="border-style:dashed">
+          <span class="idx">06 · BENCHMARK OUTPUT</span>
+          <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-5 text-xs">
+            <div><div class="font-bold text-sm" style="color:var(--steel)">Full conversation log</div><div style="color:var(--muted)">all turns, tool calls, results</div></div>
+            <div><div class="font-bold text-sm" style="color:#8a5410">Action trace</div><div style="color:var(--muted)">tools used, timing, sequence</div></div>
+            <div><div class="font-bold text-sm" style="color:var(--moss)">Judge scores</div><div style="color:var(--muted)">every metric above</div></div>
+            <div><div class="font-bold text-sm" style="color:var(--plum)">Gold standard action</div><div style="color:var(--muted)">from the scenario definition</div></div>
+            <div><div class="font-bold text-sm" style="color:var(--ember)">Summary metrics</div><div style="color:var(--muted)">aggregated performance</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide">
+    <div class="max-w-6xl mx-auto w-full">
+      <h2 class="text-3xl md:text-5xl font-bold">Finding 1 — anger moves the needle</h2>
+      <p class="mt-3 text-lg" style="color:var(--muted);max-width:72ch">Request-granted rate in <strong>reject</strong> scenarios, where every grant is a low-value order. Most models hold at zero; the ones that slip, slip under anger.</p>
+      <div class="mt-8 card p-6">
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div><div class="flex justify-between text-sm font-semibold"><span>llama-4-scout</span><span class="mono" style="color:var(--ember)">29% → 50%</span></div><div class="bar mt-2"><i style="width:29%;background:var(--muted)"></i></div><div class="bar mt-1"><i style="width:50%;background:var(--ember)"></i></div></div>
+          <div><div class="flex justify-between text-sm font-semibold"><span>GLM-5.1</span><span class="mono" style="color:var(--ember)">4% → 21%</span></div><div class="bar mt-2"><i style="width:4%;background:var(--muted)"></i></div><div class="bar mt-1"><i style="width:21%;background:var(--ember)"></i></div></div>
+          <div><div class="flex justify-between text-sm font-semibold"><span>Qwen-3.5-397B</span><span class="mono" style="color:var(--ember)">4% → 21%</span></div><div class="bar mt-2"><i style="width:4%;background:var(--muted)"></i></div><div class="bar mt-1"><i style="width:21%;background:var(--ember)"></i></div></div>
+          <div><div class="flex justify-between text-sm font-semibold"><span>gpt-5.5</span><span class="mono" style="color:var(--amber)">0% → 4%</span></div><div class="bar mt-2"><i style="width:0%;background:var(--muted)"></i></div><div class="bar mt-1"><i style="width:4%;background:var(--amber)"></i></div></div>
+        </div>
+        <p class="mt-5 text-xs mono" style="color:var(--muted)">upper bar = neutral · lower bar = anger · Gemini-3.1-Pro, grok-4.3 and kimi-k2.6 remain at 0% in all conditions</p>
+      </div>
+      <div class="mt-5 grid gap-4 md:grid-cols-2">
+        <div class="card p-5"><h3 class="font-bold">Sycophancy is asymmetric</h3><p class="mt-2 text-sm" style="color:var(--muted)">Fear and sadness rarely increase granting; several models tighten under them. Anger is the condition that converts a refusal into a prescription.</p></div>
+        <div class="card p-5"><h3 class="font-bold">The order arm is the real ceiling</h3><p class="mt-2 text-sm" style="color:var(--muted)">Even the best models grant indicated requests only 42–58% of the time. Under-treatment, not over-treatment, is the dominant error mode.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide">
+    <div class="max-w-6xl mx-auto w-full">
+      <h2 class="text-3xl md:text-5xl font-bold">Finding 2 — softening and over-testing</h2>
+      <div class="mt-8 grid gap-5 lg:grid-cols-2">
+        <div class="card p-6">
+          <span class="chip" style="background:rgba(224,138,44,.16);color:#8a5410">Refusal softening</span>
+          <h3 class="mt-3 font-bold text-xl">Anger shifts declines into "offer alternative"</h3>
+          <p class="mt-2 text-sm" style="color:var(--muted)">Share of reject-arm encounters closing with <span class="mono">offer_alternative_and_counsel</span>, neutral → anger.</p>
+          <div class="mt-4 space-y-3 text-sm">
+            <div><div class="flex justify-between font-semibold"><span>deepseek-v4-pro</span><span class="mono" style="color:var(--rust)">54 → 75</span></div><div class="bar mt-1"><i style="width:75%;background:linear-gradient(90deg,var(--amber),var(--rust))"></i></div></div>
+            <div><div class="flex justify-between font-semibold"><span>gpt-5.5</span><span class="mono" style="color:var(--rust)">62 → 79</span></div><div class="bar mt-1"><i style="width:79%;background:linear-gradient(90deg,var(--amber),var(--rust))"></i></div></div>
+            <div><div class="flex justify-between font-semibold"><span>kimi-k2.6</span><span class="mono" style="color:var(--rust)">21 → 62</span></div><div class="bar mt-1"><i style="width:62%;background:linear-gradient(90deg,var(--amber),var(--rust))"></i></div></div>
+            <div><div class="flex justify-between font-semibold"><span>grok-4.3</span><span class="mono" style="color:var(--rust)">17 → 38</span></div><div class="bar mt-1"><i style="width:38%;background:linear-gradient(90deg,var(--amber),var(--rust))"></i></div></div>
+          </div>
+          <p class="mt-4 text-xs" style="color:var(--muted)">A softer refusal can be good counseling — or a face-saving concession. The distinction is whether the clinical stance held.</p>
+        </div>
+        <div class="card p-6">
+          <span class="chip" style="background:rgba(107,74,122,.14);color:var(--plum)">Defensive testing</span>
+          <h3 class="mt-3 font-bold text-xl">Anger also buys more workup</h3>
+          <p class="mt-2 text-sm" style="color:var(--muted)">Mean <span class="mono">order_workup</span> calls per encounter — including in reject scenarios, where extra testing is itself low-value care.</p>
+          <div class="mt-4 grid grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl" style="background:rgba(36,26,18,.04)">
+              <div class="text-xs font-semibold uppercase tracking-wider" style="color:var(--muted)">Reject arm</div>
+              <div class="mt-2 text-sm">llama-4-scout <span class="mono float-right" style="color:var(--rust)">0.62 → 1.21</span></div>
+              <div class="mt-1 text-sm">Qwen-3.5 <span class="mono float-right" style="color:var(--rust)">0.17 → 0.50</span></div>
+              <div class="mt-1 text-sm">gpt-5.5 <span class="mono float-right" style="color:var(--rust)">0.17 → 0.58</span></div>
+            </div>
+            <div class="p-4 rounded-xl" style="background:rgba(36,26,18,.04)">
+              <div class="text-xs font-semibold uppercase tracking-wider" style="color:var(--muted)">Order arm</div>
+              <div class="mt-2 text-sm">GLM-5.1 <span class="mono float-right" style="color:var(--rust)">1.04 → 1.46</span></div>
+              <div class="mt-1 text-sm">llama-4-scout <span class="mono float-right" style="color:var(--rust)">0.96 → 1.38</span></div>
+              <div class="mt-1 text-sm">Qwen-3.5 <span class="mono float-right" style="color:var(--moss)">0.54 → 0.71</span></div>
+            </div>
+          </div>
+          <p class="mt-4 text-xs" style="color:var(--muted)">Gemini-3.1-Pro and grok-4.3 barely test at all in the reject arm — a different, terser failure profile.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <!-- <section class="slide">
+    <div class="max-w-6xl mx-auto w-full">
+      <h2 class="text-3xl md:text-5xl font-bold">What this means</h2>
+      <div class="mt-8 grid gap-5 md:grid-cols-3">
+        <div class="card p-6">
+          <div class="mono text-xs" style="color:var(--rust)">TAKEAWAY 01</div>
+          <h3 class="mt-2 font-bold text-lg">Affect is an attack surface</h3>
+          <p class="mt-2 text-sm leading-relaxed" style="color:var(--muted)">Frustration alone — never stated, only implied — is enough to move final clinical actions in several frontier models. Refusal robustness must be tested under tone, not just under content.</p>
+        </div>
+        <div class="card p-6">
+          <div class="mono text-xs" style="color:var(--amber)">TAKEAWAY 02</div>
+          <h3 class="mt-2 font-bold text-lg">Measure the whole encounter</h3>
+          <p class="mt-2 text-sm leading-relaxed" style="color:var(--muted)">Single-turn accuracy hides the interesting failures. Softened refusals, defensive workup, and premature closure only appear in a multi-turn agentic loop with non-terminal tools.</p>
+        </div>
+        <div class="card p-6">
+          <div class="mono text-xs" style="color:var(--moss)">TAKEAWAY 03</div>
+          <h3 class="mt-2 font-bold text-lg">Both errors count</h3>
+          <p class="mt-2 text-sm leading-relaxed" style="color:var(--muted)">A model that refuses everything scores perfectly on the reject arm and fails patients on the order arm. Matched pairs keep safety and helpfulness on the same scoreboard.</p>
+        </div>
+      </div>
+      <div class="mt-8 card p-6 flex flex-col md:flex-row md:items-center gap-4 justify-between">
+        <div>
+          <h3 class="font-bold text-xl">Next</h3>
+          <p class="text-sm mt-1" style="color:var(--muted)">Expand the scenario bank beyond Choosing Wisely, add clinician adjudication of the softened-refusal category, and test whether de-escalation training reduces the anger effect without dulling responsiveness.</p>
+        </div>
+        <div class="mono text-sm whitespace-nowrap" style="color:var(--rust)">SAFEQ-Med · benchmark v1</div>
+      </div>
+    </div>
+  </section>
+</div> -->
+
+<div class="fixed bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-4 z-50">
+  <button class="nav-btn" id="prev" aria-label="Previous slide">‹</button>
+  <div class="flex items-center gap-2" id="dots"></div>
+  <button class="nav-btn" id="next" aria-label="Next slide">›</button>
+</div>
+<div class="fixed top-5 right-6 mono text-xs z-50" style="color:var(--muted)"><span id="cur">1</span> / <span id="tot">6</span></div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+const dots=document.getElementById('dots');
+let i=0;
+document.getElementById('tot').textContent=slides.length;
+slides.forEach((_,n)=>{const d=document.createElement('div');d.className='dot'+(n===0?' on':'');d.onclick=()=>go(n);dots.appendChild(d)});
+function go(n){
+  i=Math.max(0,Math.min(slides.length-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));
+  document.getElementById('cur').textContent=i+1;
+  slides[i].scrollTop=0;
+  slides[i].querySelectorAll('.bar > i').forEach(b=>{const w=b.style.width;b.style.width='0';requestAnimationFrame(()=>requestAnimationFrame(()=>b.style.width=w))});
+}
+document.getElementById('prev').onclick=()=>go(i-1);
+document.getElementById('next').onclick=()=>go(i+1);
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(i+1)}
+  if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(i-1)}
+  if(e.key==='Home')go(0); if(e.key==='End')go(slides.length-1);
+});
+let sx=null;
+document.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{if(sx===null)return;const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>60)go(i+(d<0?1:-1));sx=null},{passive:true});
+</script>
+</body>
+</html>

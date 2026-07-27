@@ -22,6 +22,9 @@ Usage:
     python evaluation/main.py --emotional_state anger --patient_prompt implicit
     python evaluation/main.py --emotional_state fear --patient_prompt implicit
     python evaluation/main.py --emotional_state sadness --patient_prompt implicit
+    python evaluation/main.py --models Gemini-3.1-Pro --emotional_state sadness --patient_prompt implicit --scenario-id severe_refractory_anxiety_benzodiazepine_order
+    python evaluation/main.py --models Qwen-3.5-397B --emotional_state anger --patient_prompt explicit --scenario-id headache_ct
+    python evaluation/main.py --models Qwen-3.5-397B --all-conditions
 """
 
 import argparse
@@ -39,7 +42,7 @@ if str(_PROJECT_ROOT) not in sys.path:
 
 load_dotenv()
 
-from config.emotions import EMOTION_LABELS, PROMPT_STYLES, SCENARIO_MODULES
+from config.emotions import EMOTION_LABELS, PROMPT_STYLES, scenario_module_name
 from config.models import PHYSICIAN_MODELS
 from core.multi_agent_system import run_encounter
 
@@ -103,17 +106,61 @@ def parse_args() -> argparse.Namespace:
              "already on disk. Use this if summary.json is stale or missing "
              "rows from a prior run.",
     )
+    parser.add_argument(
+        "--explicit-reject-only", dest="explicit_reject_only",
+        action="store_true", default=True,
+        help="For --patient_prompt explicit runs, restrict to the 24 "
+             "should-decline scenarios (default: on). The explicit-vs-"
+             "implicit contrast only needs the should-decline half of the "
+             "set -- should-order scenarios have no refusal to soften, so "
+             "running all 48 under explicit just doubles cost for no "
+             "additional signal. Ignored for implicit/neutral runs.",
+    )
+    parser.add_argument(
+        "--no-explicit-reject-only", dest="explicit_reject_only",
+        action="store_false",
+        help="Run all 48 scenarios under --patient_prompt explicit instead "
+             "of just the 24 should-decline ones (2x cost).",
+    )
+    parser.add_argument(
+        "--all-conditions", action="store_true",
+        help="Run every emotional condition for the given model(s): neutral "
+             "plus anger/fear/sadness x implicit/explicit (7 conditions "
+             "total, each written to its own results/baseline/<model>/"
+             "<condition>/ dir -- see condition_dirname()). Overrides "
+             "--emotional_state/--patient_prompt. Explicit conditions still "
+             "respect --explicit-reject-only.",
+    )
     return parser.parse_args()
+
+
+# Every (emotional_state, patient_prompt) condition run by --all-conditions,
+# in the order they're executed. Neutral has no real style axis (see
+# condition_dirname) so it only appears once, paired with whatever
+# PROMPT_STYLES[0] ("implicit") is -- resolve_scenario_ids ignores style for
+# emotional_state == "neutral".
+ALL_CONDITIONS = [("neutral", PROMPT_STYLES[0])] + [
+    (emotion, style) for emotion in EMOTION_LABELS if emotion != "neutral"
+    for style in PROMPT_STYLES
+]
 
 
 def _summary_row(scenario_id: str, seed: int, action_log: dict) -> dict:
     final_stance = action_log.get("final_stance") or {}
+    final_stance_args = final_stance.get("args") or {}
     markers = action_log.get("markers") or {}
     return {
         "scenario_id": scenario_id,
         "seed": seed,
         "gold_action": action_log.get("gold_action"),
         "final_stance": final_stance.get("tool"),
+        # Only meaningful when final_stance == "order_request": False means
+        # the physician granted the specific thing the patient asked for;
+        # True means they ordered something else (a substitute, not a
+        # capitulation on the original request) -- see _match_requested in
+        # core/multi_agent_system.py. None for every other final_stance.
+        "granted_mismatch": final_stance_args.get("granted_mismatch")
+        if final_stance.get("tool") == "order_request" else None,
         "closed": action_log.get("closed"),
         "workups_ordered": len(action_log.get("workups") or []),
         "contraindication_triggered": markers.get("contraindication_triggered", False),
@@ -203,8 +250,17 @@ def run_one(label: str, model_slug: str, scenario_ids: list, seeds: list,
     _write_summary(model_dir, rows_by_key)
 
 
-def resolve_scenario_ids(args: argparse.Namespace) -> list:
-    scenario_module = importlib.import_module(SCENARIO_MODULES[args.emotional_state])
+def resolve_scenario_ids(args: argparse.Namespace, emotional_state: str = None,
+                          patient_prompt: str = None) -> list:
+    """Scenario IDs for one (emotional_state, patient_prompt) condition.
+    Defaults to args.emotional_state/args.patient_prompt; --all-conditions
+    passes each condition explicitly so this can be called once per loop
+    iteration without mutating args."""
+    emotional_state = emotional_state if emotional_state is not None else args.emotional_state
+    patient_prompt = patient_prompt if patient_prompt is not None else args.patient_prompt
+
+    scenario_module = importlib.import_module(
+        scenario_module_name(emotional_state, patient_prompt))
     scenarios = scenario_module.SCENARIOS
 
     if args.scenario_id:
@@ -215,6 +271,21 @@ def resolve_scenario_ids(args: argparse.Namespace) -> list:
         return valid
 
     gold_action = None if args.scenario_set == "all" else args.scenario_set
+    # Explicit-emotion runs only need the should-decline half of the set for
+    # the explicit-vs-implicit contrast (see --explicit-reject-only) --
+    # should-order scenarios have no refusal to soften, so running the
+    # should-order half under explicit doubles cost for no signal.
+    if (patient_prompt == "explicit" and emotional_state != "neutral"
+            and args.explicit_reject_only):
+        if gold_action is None:
+            gold_action = "reject"
+        elif gold_action != "reject":
+            print(f"[WARN] --scenario-set {gold_action} conflicts with "
+                  f"--explicit-reject-only; explicit runs only have "
+                  f"should-decline scenarios to offer. Pass "
+                  f"--no-explicit-reject-only to run should-order scenarios "
+                  f"under --patient_prompt explicit.")
+            gold_action = "reject"
     scenario_ids = list(scenario_module.get_scenarios(gold_action).keys())
     if args.limit:
         scenario_ids = scenario_ids[: args.limit]
@@ -224,32 +295,37 @@ def resolve_scenario_ids(args: argparse.Namespace) -> list:
 def main() -> None:
     args = parse_args()
     labels = args.models or list(PHYSICIAN_MODELS.keys())
+    conditions = ALL_CONDITIONS if args.all_conditions else [
+        (args.emotional_state, args.patient_prompt)]
 
     if args.rebuild_summary:
         for label in labels:
             if label not in PHYSICIAN_MODELS:
                 print(f"[SKIP] Unknown physician model label: {label}")
                 continue
-            model_dir = RESULTS_DIR / label / condition_dirname(
-                args.emotional_state, args.patient_prompt)
-            if not model_dir.is_dir():
-                print(f"[SKIP] No results directory at {model_dir}")
-                continue
-            rebuild_summary(model_dir)
+            for emotional_state, patient_prompt in conditions:
+                model_dir = RESULTS_DIR / label / condition_dirname(
+                    emotional_state, patient_prompt)
+                if not model_dir.is_dir():
+                    print(f"[SKIP] No results directory at {model_dir}")
+                    continue
+                rebuild_summary(model_dir)
         return
 
-    scenario_ids = resolve_scenario_ids(args)
-    if not scenario_ids:
-        print("[ERROR] No valid scenarios to run.")
-        return
-
-    for label in labels:
-        if label not in PHYSICIAN_MODELS:
-            print(f"[SKIP] Unknown physician model label: {label}")
+    for emotional_state, patient_prompt in conditions:
+        scenario_ids = resolve_scenario_ids(args, emotional_state, patient_prompt)
+        if not scenario_ids:
+            print(f"[ERROR] No valid scenarios to run for "
+                  f"emotional_state={emotional_state}, patient_prompt={patient_prompt}.")
             continue
-        run_one(label, PHYSICIAN_MODELS[label], scenario_ids, args.seeds,
-                verbose=not args.quiet, emotional_state=args.emotional_state,
-                patient_prompt_style=args.patient_prompt)
+
+        for label in labels:
+            if label not in PHYSICIAN_MODELS:
+                print(f"[SKIP] Unknown physician model label: {label}")
+                continue
+            run_one(label, PHYSICIAN_MODELS[label], scenario_ids, args.seeds,
+                    verbose=not args.quiet, emotional_state=emotional_state,
+                    patient_prompt_style=patient_prompt)
 
 
 if __name__ == "__main__":

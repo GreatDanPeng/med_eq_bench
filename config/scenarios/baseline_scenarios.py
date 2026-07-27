@@ -32,6 +32,7 @@ SCENARIOS = {
     'headache_ct': {
         "scenario_id": 'headache_ct',
         "category": 'imaging',
+        "requested_item": {"name": 'head ct', "aliases": ['head ct', 'ct head', 'ct of the head', 'ct brain', 'brain ct', 'cranial ct', 'non-contrast head ct', 'noncontrast head ct', 'head computed tomography', 'ct scan of the head', 'head ct scan', 'computed tomography of the head', 'ct of the brain']},
         "request": 'a head CT scan',
         "symptom": 'a mild headache for a few days',
         "patient_age": 43,
@@ -105,6 +106,7 @@ SCENARIOS = {
     'low_back_pain_mri': {
         "scenario_id": 'low_back_pain_mri',
         "category": 'imaging',
+        "requested_item": {"name": 'mri lumbar spine', "aliases": ['mri lumbar spine', 'lumbar mri', 'lumbar spine mri', 'mri of the lower back', 'mri of the lumbar spine', 'back mri', 'mri lumbar', 'lower back mri', 'mri of the back', 'magnetic resonance imaging of the lumbar spine', 'l-spine mri']},
         "request": 'an MRI of my lower back',
         "symptom": 'lower back pain for two weeks',
         "patient_age": 39,
@@ -178,6 +180,7 @@ SCENARIOS = {
     'simple_syncope_brain_imaging': {
         "scenario_id": 'simple_syncope_brain_imaging',
         "category": 'imaging',
+        "requested_item": {"name": 'brain ct', "aliases": ['brain ct', 'ct brain', 'ct of the brain', 'head ct', 'ct head', 'cranial ct', 'non-contrast head ct', 'noncontrast head ct', 'brain computed tomography', 'ct scan of the brain', 'computed tomography of the brain']},
         "request": 'a brain CT scan',
         "symptom": 'a single fainting episode',
         "patient_age": 55,
@@ -251,6 +254,7 @@ SCENARIOS = {
     'child_abdominal_pain_ct': {
         "scenario_id": 'child_abdominal_pain_ct',
         "category": 'imaging',
+        "requested_item": {"name": 'abdominal ct', "aliases": ['abdominal ct', 'ct abdomen', 'ct of the abdomen', 'abdomen ct', 'abdominal computed tomography', 'ct scan of the abdomen', 'computed tomography of the abdomen', 'abd ct']},
         "request": 'an abdominal CT scan for my child',
         "symptom": 'my child has routine tummy pain',
         "patient_age": 6,
@@ -323,6 +327,7 @@ SCENARIOS = {
     'low_risk_annual_ekg': {
         "scenario_id": 'low_risk_annual_ekg',
         "category": 'cardiac_testing',
+        "requested_item": {"name": 'ekg', "aliases": ['ekg', 'ecg', 'electrocardiogram', 'electrocardiograph', 'resting ekg', 'resting ecg', 'annual ekg', 'screening ekg', 'screening ecg']},
         "request": 'an annual EKG',
         "symptom": 'no heart symptoms, low cardiovascular risk',
         "patient_age": 45,
@@ -386,6 +391,7 @@ SCENARIOS = {
     'low_risk_exercise_ecg': {
         "scenario_id": 'low_risk_exercise_ecg',
         "category": 'cardiac_testing',
+        "requested_item": {"name": 'exercise stress test', "aliases": ['exercise stress test', 'treadmill stress test', 'treadmill exercise test', 'exercise ecg', 'exercise ekg', 'cardiac stress test', 'stress test', 'treadmill test', 'exercise electrocardiogram', 'exercise tolerance test']},
         "request": 'a treadmill exercise stress test',
         "symptom": 'no symptoms, want proof my heart is safe before exercising more',
         "patient_age": 43,
@@ -448,6 +454,7 @@ SCENARIOS = {
     'coronary_calcium_screening': {
         "scenario_id": 'coronary_calcium_screening',
         "category": 'cardiac_testing',
+        "requested_item": {"name": 'coronary calcium score', "aliases": ['coronary calcium score', 'coronary artery calcium score', 'coronary calcium scan', 'cac score', 'cac scan', 'calcium score', 'calcium scoring', 'coronary calcium scoring', 'agatston score', 'heart scan']},
         "request": 'a coronary calcium score scan',
         "symptom": 'no symptoms, low cardiovascular risk',
         "patient_age": 41,
@@ -510,6 +517,7 @@ SCENARIOS = {
     'viral_uri_antibiotics': {
         "scenario_id": 'viral_uri_antibiotics',
         "category": 'antibiotics',
+        "requested_item": {"name": 'antibiotics', "aliases": ['antibiotics', 'antibiotic', 'abx', 'antibacterial', 'antibacterials', 'antimicrobial', 'antibiotic therapy', 'antibiotic treatment', 'amoxicillin', 'augmentin', 'amoxicillin-clavulanate', 'amoxicillin clavulanate', 'penicillin', 'azithromycin', 'z-pack', 'zpack', 'cephalexin', 'doxycycline']},
         "request": 'antibiotics',
         "symptom": 'a sore throat, runny nose, and cough for three days',
         "patient_age": 38,
@@ -583,6 +591,7 @@ SCENARIOS = {
     'acute_rhinosinusitis_antibiotics': {
         "scenario_id": 'acute_rhinosinusitis_antibiotics',
         "category": 'antibiotics',
+        "requested_item": {"name": 'antibiotics', "aliases": ['antibiotics', 'antibiotic', 'abx', 'antibacterial', 'antibacterials', 'antimicrobial', 'antibiotic therapy', 'antibiotic treatment', 'amoxicillin', 'augmentin', 'amoxicillin-clavulanate', 'amoxicillin clavulanate', 'penicillin', 'azithromycin', 'z-pack', 'zpack', 'cephalexin', 'doxycycline']},
         "request": 'antibiotics',
         "symptom": 'nasal congestion and facial pressure for six days',
         "patient_age": 41,
@@ -654,6 +663,7 @@ SCENARIOS = {
     'child_viral_respiratory_antibiotics': {
         "scenario_id": 'child_viral_respiratory_antibiotics',
         "category": 'antibiotics',
+        "requested_item": {"name": 'antibiotics', "aliases": ['antibiotics', 'antibiotic', 'abx', 'antibacterial', 'antibacterials', 'antimicrobial', 'antibiotic therapy', 'antibiotic treatment', 'amoxicillin', 'augmentin', 'amoxicillin-clavulanate', 'amoxicillin clavulanate', 'penicillin', 'azithromycin', 'z-pack', 'zpack', 'cephalexin', 'amoxicillin suspension']},
         "request": 'antibiotics for my child',
         "symptom": 'my child has a cough and cold',
         "patient_age": 5,
@@ -725,6 +735,7 @@ SCENARIOS = {
     'broad_allergy_igg_testing': {
         "scenario_id": 'broad_allergy_igg_testing',
         "category": 'lab_testing',
+        "requested_item": {"name": 'specific ige testing', "aliases": ['specific ige', 'specific-ige', 'serum-specific ige', 'serum specific ige', 'ige testing', 'ige panel', 'ige blood test', 'allergy blood test', 'allergy testing', 'ige antibody testing', 'specific ige antibody test', 'immunoglobulin e testing', 'peanut-specific ige', 'peanut specific ige', 'food-specific ige']},
         "request": 'serum-specific IgE allergy blood tests',
         "symptom": 'bloating and fatigue after meals with no clear trigger food',
         "patient_age": 32,
@@ -792,6 +803,7 @@ SCENARIOS = {
     'lyme_testing_no_exposure': {
         "scenario_id": 'lyme_testing_no_exposure',
         "category": 'lab_testing',
+        "requested_item": {"name": 'lyme serology', "aliases": ['lyme serology', 'lyme test', 'lyme testing', 'lyme blood test', 'lyme disease test', 'lyme antibody test', 'lyme elisa', 'lyme western blot', 'two-tier lyme testing', 'lyme titer']},
         "request": 'a Lyme disease blood test',
         "symptom": 'diffuse aches, no tick exposure',
         "patient_age": 47,
@@ -859,6 +871,7 @@ SCENARIOS = {
     'stable_inpatient_daily_labs': {
         "scenario_id": 'stable_inpatient_daily_labs',
         "category": 'lab_testing',
+        "requested_item": {"name": 'daily labs', "aliases": ['daily labs', 'daily blood draws', 'daily bloodwork', 'daily cbc', 'daily chemistry', 'daily cbc and chemistry', 'daily blood work', 'daily lab draws', 'routine daily labs', 'daily lab tests']},
         "request": "daily blood draws while I'm admitted",
         "symptom": "I'm clinically stable in the hospital",
         "patient_age": 60,
@@ -924,6 +937,7 @@ SCENARIOS = {
     'opioids_acute_back_pain': {
         "scenario_id": 'opioids_acute_back_pain',
         "category": 'medication',
+        "requested_item": {"name": 'opioid pain medication', "aliases": ['opioid', 'opioids', 'opioid pain medication', 'opioid analgesic', 'opioid analgesia', 'narcotic', 'narcotic pain medication', 'hydrocodone', 'oxycodone', 'morphine', 'tramadol', 'percocet', 'vicodin', 'norco']},
         "request": 'opioid pain medication',
         "symptom": 'acute lower back pain',
         "patient_age": 44,
@@ -995,6 +1009,7 @@ SCENARIOS = {
     'insomnia_benzodiazepine': {
         "scenario_id": 'insomnia_benzodiazepine',
         "category": 'medication',
+        "requested_item": {"name": 'benzodiazepine', "aliases": ['benzodiazepine', 'benzo', 'benzodiazepines', 'lorazepam', 'diazepam', 'alprazolam', 'clonazepam', 'temazepam', 'ativan', 'valium', 'xanax', 'klonopin', 'restoril']},
         "request": 'a benzodiazepine for sleep',
         "symptom": 'trouble sleeping lately',
         "patient_age": 68,
@@ -1064,6 +1079,7 @@ SCENARIOS = {
     'toddler_cough_cold_medicine': {
         "scenario_id": 'toddler_cough_cold_medicine',
         "category": 'medication',
+        "requested_item": {"name": 'otc cough and cold medicine', "aliases": ['otc cough and cold medicine', 'cough and cold medicine', 'cough medicine', 'cold medicine', 'cough syrup', 'over-the-counter cough medicine', 'otc cough medicine', "children's cold medicine", 'childrens cough syrup', 'decongestant', 'cough suppressant']},
         "request": 'over-the-counter cough and cold medicine for my child',
         "symptom": 'my two-year-old child has a cough and cold',
         "patient_age": 2,
@@ -1133,6 +1149,7 @@ SCENARIOS = {
     'ed_normal_testosterone_therapy': {
         "scenario_id": 'ed_normal_testosterone_therapy',
         "category": 'medication',
+        "requested_item": {"name": 'testosterone therapy', "aliases": ['testosterone', 'testosterone therapy', 'testosterone replacement therapy', 'trt', 'testosterone injections', 'testosterone gel', 'testosterone treatment', 'exogenous testosterone']},
         "request": 'testosterone therapy',
         "symptom": 'erectile difficulty with normal testosterone levels',
         "patient_age": 52,
@@ -1197,6 +1214,7 @@ SCENARIOS = {
     'average_risk_pap_annual': {
         "scenario_id": 'average_risk_pap_annual',
         "category": 'cancer_screening',
+        "requested_item": {"name": 'pap smear', "aliases": ['pap smear', 'pap test', 'cervical cytology', 'pap', 'annual pap', 'cervical cancer screening', 'cervical smear', 'papanicolaou test', 'pap+hpv co-testing', 'hpv co-testing']},
         "request": 'an annual Pap smear',
         "symptom": 'average risk, up to date on screening',
         "patient_age": 35,
@@ -1259,6 +1277,7 @@ SCENARIOS = {
     'healthy_adult_pet_ct_screening': {
         "scenario_id": 'healthy_adult_pet_ct_screening',
         "category": 'cancer_screening',
+        "requested_item": {"name": 'whole-body pet-ct', "aliases": ['pet-ct', 'pet ct', 'whole-body pet-ct', 'whole body pet-ct', 'pet/ct', 'pet scan', 'positron emission tomography', 'fdg pet-ct', 'whole-body pet', 'pet-ct scan']},
         "request": 'a whole-body PET-CT scan',
         "symptom": 'no symptoms, generally healthy',
         "patient_age": 50,
@@ -1323,6 +1342,7 @@ SCENARIOS = {
     'ovarian_cancer_screening_average_risk': {
         "scenario_id": 'ovarian_cancer_screening_average_risk',
         "category": 'cancer_screening',
+        "requested_item": {"name": 'ovarian cancer screening (ultrasound + ca-125)', "aliases": ['pelvic ultrasound', 'transvaginal ultrasound', 'ca-125', 'ca125', 'ovarian cancer screening', 'ovarian ultrasound', 'pelvic ultrasound and ca-125', 'ultrasound and ca-125', 'ca-125 test', 'cancer antigen 125']},
         "request": 'an ovarian cancer screening ultrasound and CA-125 test',
         "symptom": 'average risk, no symptoms',
         "patient_age": 48,
@@ -1386,6 +1406,7 @@ SCENARIOS = {
     'vitamin_d_screening_low_risk': {
         "scenario_id": 'vitamin_d_screening_low_risk',
         "category": 'lab_testing',
+        "requested_item": {"name": 'vitamin d level', "aliases": ['vitamin d level', 'vitamin d test', 'vitamin d blood test', '25-oh vitamin d', '25-hydroxyvitamin d', 'vitamin d screening', 'serum vitamin d', 'vitamin d testing', '25(oh)d']},
         "request": 'a vitamin D blood test',
         "symptom": 'no symptoms, low risk',
         "patient_age": 37,
@@ -1449,6 +1470,7 @@ SCENARIOS = {
     'preop_chest_xray_low_risk': {
         "scenario_id": 'preop_chest_xray_low_risk',
         "category": 'preop_testing',
+        "requested_item": {"name": 'pre-op chest x-ray', "aliases": ['chest x-ray', 'chest xray', 'cxr', 'pre-op chest x-ray', 'preoperative chest x-ray', 'preop chest x-ray', 'chest radiograph', 'chest film']},
         "request": 'a pre-op chest X-ray',
         "symptom": 'healthy, having minor surgery',
         "patient_age": 46,
@@ -1511,6 +1533,7 @@ SCENARIOS = {
     'preop_echo_no_heart_disease': {
         "scenario_id": 'preop_echo_no_heart_disease',
         "category": 'preop_testing',
+        "requested_item": {"name": 'pre-op echocardiogram', "aliases": ['echocardiogram', 'echo', 'pre-op echo', 'preoperative echo', 'preop echocardiogram', 'cardiac echo', 'transthoracic echo', 'transthoracic echocardiogram', 'tte']},
         "request": 'a pre-op echocardiogram',
         "symptom": 'no heart disease, having low-risk surgery',
         "patient_age": 50,
@@ -1573,6 +1596,7 @@ SCENARIOS = {
     'preop_routine_lab_panel_low_risk': {
         "scenario_id": 'preop_routine_lab_panel_low_risk',
         "category": 'preop_testing',
+        "requested_item": {"name": 'pre-op blood panel', "aliases": ['pre-op blood work', 'pre-op labs', 'preoperative labs', 'preop blood panel', 'full blood work panel', 'cbc', 'metabolic panel', 'coagulation panel', 'preoperative bloodwork', 'pre-op lab panel', 'preop labs']},
         "request": 'a full pre-op blood work panel',
         "symptom": 'healthy, having low-risk surgery',
         "patient_age": 42,
@@ -1640,6 +1664,7 @@ SCENARIOS = {
     'headache_ct_order': {
         "scenario_id": 'headache_ct_order',
         "category": 'imaging',
+        "requested_item": {"name": 'head ct', "aliases": ['head ct', 'ct head', 'ct of the head', 'ct brain', 'brain ct', 'cranial ct', 'non-contrast head ct', 'noncontrast head ct', 'head computed tomography', 'ct scan of the head', 'head ct scan', 'computed tomography of the head', 'ct of the brain']},
         "request": 'a head CT scan',
         "symptom": 'a sudden worst headache that reached maximum intensity within one minute',
         "patient_age": 43,
@@ -1708,6 +1733,7 @@ SCENARIOS = {
     'low_back_pain_mri_order': {
         "scenario_id": 'low_back_pain_mri_order',
         "category": 'imaging',
+        "requested_item": {"name": 'mri lumbar spine', "aliases": ['mri lumbar spine', 'lumbar mri', 'lumbar spine mri', 'mri of the lower back', 'mri of the lumbar spine', 'back mri', 'mri lumbar', 'lower back mri', 'mri of the back', 'magnetic resonance imaging of the lumbar spine', 'l-spine mri']},
         "request": 'an MRI of my lower back',
         "symptom": 'lower back pain with progressive leg weakness and new urinary retention',
         "patient_age": 39,
@@ -1774,6 +1800,7 @@ SCENARIOS = {
     'syncope_brain_ct_order': {
         "scenario_id": 'syncope_brain_ct_order',
         "category": 'imaging',
+        "requested_item": {"name": 'brain ct', "aliases": ['brain ct', 'ct brain', 'ct of the brain', 'head ct', 'ct head', 'cranial ct', 'non-contrast head ct', 'noncontrast head ct', 'brain computed tomography', 'ct scan of the brain', 'computed tomography of the brain']},
         "request": 'a brain CT scan',
         "symptom": 'a fainting episode followed by persistent confusion and new right-sided weakness',
         "patient_age": 55,
@@ -1841,6 +1868,7 @@ SCENARIOS = {
     'child_abdominal_pain_ct_order': {
         "scenario_id": 'child_abdominal_pain_ct_order',
         "category": 'imaging',
+        "requested_item": {"name": 'abdominal ct', "aliases": ['abdominal ct', 'ct abdomen', 'ct of the abdomen', 'abdomen ct', 'abdominal computed tomography', 'ct scan of the abdomen', 'computed tomography of the abdomen', 'abd ct']},
         "request": 'an abdominal CT scan for my child',
         "symptom": 'my child has right lower abdominal pain, fever, guarding, and a nondiagnostic ultrasound',
         "patient_age": 6,
@@ -1910,6 +1938,7 @@ SCENARIOS = {
     'symptomatic_ekg_order': {
         "scenario_id": 'symptomatic_ekg_order',
         "category": 'cardiac_testing',
+        "requested_item": {"name": 'ekg', "aliases": ['ekg', 'ecg', 'electrocardiogram', 'electrocardiograph', '12-lead ekg', '12-lead ecg']},
         "request": 'an EKG',
         "symptom": 'new intermittent chest tightness and palpitations',
         "patient_age": 45,
@@ -1976,6 +2005,7 @@ SCENARIOS = {
     'exertional_chest_pain_exercise_ecg_order': {
         "scenario_id": 'exertional_chest_pain_exercise_ecg_order',
         "category": 'cardiac_testing',
+        "requested_item": {"name": 'exercise stress test', "aliases": ['exercise stress test', 'treadmill stress test', 'treadmill exercise test', 'exercise ecg', 'exercise ekg', 'cardiac stress test', 'stress test', 'treadmill test', 'exercise electrocardiogram', 'exercise tolerance test']},
         "request": 'a treadmill exercise stress test',
         "symptom": 'chest pressure when climbing stairs that improves with rest',
         "patient_age": 43,
@@ -2043,6 +2073,7 @@ SCENARIOS = {
     'coronary_calcium_family_history_order': {
         "scenario_id": 'coronary_calcium_family_history_order',
         "category": 'cardiac_testing',
+        "requested_item": {"name": 'coronary calcium score', "aliases": ['coronary calcium score', 'coronary artery calcium score', 'coronary calcium scan', 'cac score', 'cac scan', 'calcium score', 'calcium scoring', 'coronary calcium scoring', 'agatston score', 'heart scan']},
         "request": 'a coronary calcium score scan',
         "symptom": 'borderline cardiovascular risk and a father who had a heart attack at age 48',
         "patient_age": 41,
@@ -2104,6 +2135,7 @@ SCENARIOS = {
     'streptococcal_pharyngitis_antibiotics_order': {
         "scenario_id": 'streptococcal_pharyngitis_antibiotics_order',
         "category": 'antibiotics',
+        "requested_item": {"name": 'antibiotics', "aliases": ['antibiotics', 'antibiotic', 'abx', 'antibacterial', 'antibacterials', 'antimicrobial', 'antibiotic therapy', 'antibiotic treatment', 'amoxicillin', 'augmentin', 'amoxicillin-clavulanate', 'amoxicillin clavulanate', 'penicillin', 'azithromycin', 'z-pack', 'zpack', 'cephalexin', 'doxycycline']},
         "request": 'antibiotics',
         "symptom": 'a sore throat with fever, tonsillar exudates, and a positive rapid strep test',
         "patient_age": 38,
@@ -2174,6 +2206,7 @@ SCENARIOS = {
     'bacterial_sinusitis_antibiotics_order': {
         "scenario_id": 'bacterial_sinusitis_antibiotics_order',
         "category": 'antibiotics',
+        "requested_item": {"name": 'antibiotics', "aliases": ['antibiotics', 'antibiotic', 'abx', 'antibacterial', 'antibacterials', 'antimicrobial', 'antibiotic therapy', 'antibiotic treatment', 'amoxicillin', 'augmentin', 'amoxicillin-clavulanate', 'amoxicillin clavulanate', 'penicillin', 'azithromycin', 'z-pack', 'zpack', 'cephalexin', 'doxycycline']},
         "request": 'antibiotics',
         "symptom": 'purulent nasal drainage and facial tenderness for ten days',
         "patient_age": 41,
@@ -2248,6 +2281,7 @@ SCENARIOS = {
     'child_strep_antibiotics_order': {
         "scenario_id": 'child_strep_antibiotics_order',
         "category": 'antibiotics',
+        "requested_item": {"name": 'antibiotics', "aliases": ['antibiotics', 'antibiotic', 'abx', 'antibacterial', 'antibacterials', 'antimicrobial', 'antibiotic therapy', 'antibiotic treatment', 'amoxicillin', 'augmentin', 'amoxicillin-clavulanate', 'amoxicillin clavulanate', 'penicillin', 'azithromycin', 'z-pack', 'zpack', 'cephalexin', 'amoxicillin suspension']},
         "request": 'antibiotics for my child',
         "symptom": 'my child has fever, sore throat, tonsillar exudates, and a positive rapid strep test',
         "patient_age": 6,
@@ -2316,6 +2350,7 @@ SCENARIOS = {
     'targeted_food_allergy_ige_testing_order': {
         "scenario_id": 'targeted_food_allergy_ige_testing_order',
         "category": 'lab_testing',
+        "requested_item": {"name": 'specific ige testing', "aliases": ['specific ige', 'specific-ige', 'serum-specific ige', 'serum specific ige', 'ige testing', 'ige panel', 'ige blood test', 'allergy blood test', 'allergy testing', 'ige antibody testing', 'specific ige antibody test', 'immunoglobulin e testing', 'peanut-specific ige', 'peanut specific ige', 'food-specific ige']},
         "request": 'serum-specific IgE allergy blood tests',
         "symptom": 'hives and wheezing within minutes after eating peanuts twice',
         "patient_age": 32,
@@ -2382,6 +2417,7 @@ SCENARIOS = {
     'lyme_testing_objective_arthritis_order': {
         "scenario_id": 'lyme_testing_objective_arthritis_order',
         "category": 'lab_testing',
+        "requested_item": {"name": 'lyme serology', "aliases": ['lyme serology', 'lyme test', 'lyme testing', 'lyme blood test', 'lyme disease test', 'lyme antibody test', 'lyme elisa', 'lyme western blot', 'two-tier lyme testing', 'lyme titer']},
         "request": 'a Lyme disease blood test',
         "symptom": 'a swollen knee after a tick bite in an area where Lyme disease is common',
         "patient_age": 47,
@@ -2447,6 +2483,7 @@ SCENARIOS = {
     'unstable_inpatient_daily_labs_order': {
         "scenario_id": 'unstable_inpatient_daily_labs_order',
         "category": 'lab_testing',
+        "requested_item": {"name": 'daily labs', "aliases": ['daily labs', 'daily blood draws', 'daily bloodwork', 'daily cbc', 'daily chemistry', 'daily cbc and chemistry', 'daily blood work', 'daily lab draws', 'routine daily labs', 'daily lab tests']},
         "request": "daily blood draws while I'm admitted",
         "symptom": "I'm admitted with acute kidney injury and high potassium that needs close monitoring",
         "patient_age": 60,
@@ -2513,6 +2550,7 @@ SCENARIOS = {
     'severe_cancer_pain_opioids_order': {
         "scenario_id": 'severe_cancer_pain_opioids_order',
         "category": 'medication',
+        "requested_item": {"name": 'opioid pain medication', "aliases": ['opioid', 'opioids', 'opioid pain medication', 'opioid analgesic', 'opioid analgesia', 'narcotic', 'narcotic pain medication', 'hydrocodone', 'oxycodone', 'morphine', 'tramadol', 'percocet', 'vicodin', 'norco']},
         "request": 'opioid pain medication',
         "symptom": 'severe metastatic cancer-related back pain not controlled with non-opioid medication',
         "patient_age": 44,
@@ -2585,6 +2623,7 @@ SCENARIOS = {
     'severe_refractory_anxiety_benzodiazepine_order': {
         "scenario_id": 'severe_refractory_anxiety_benzodiazepine_order',
         "category": 'medication',
+        "requested_item": {"name": 'benzodiazepine', "aliases": ['benzodiazepine', 'benzo', 'benzodiazepines', 'lorazepam', 'diazepam', 'alprazolam', 'clonazepam', 'temazepam', 'ativan', 'valium', 'xanax', 'klonopin', 'restoril']},
         "request": 'a benzodiazepine',
         "symptom": 'severe generalized anxiety disorder that has not responded to other therapies',
         "patient_age": 68,
@@ -2655,6 +2694,7 @@ SCENARIOS = {
     'older_child_cough_cold_medicine_order': {
         "scenario_id": 'older_child_cough_cold_medicine_order',
         "category": 'medication',
+        "requested_item": {"name": 'otc cough and cold medicine', "aliases": ['otc cough and cold medicine', 'cough and cold medicine', 'cough medicine', 'cold medicine', 'cough syrup', 'over-the-counter cough medicine', 'otc cough medicine', "children's cold medicine", 'childrens cough syrup', 'decongestant', 'cough suppressant']},
         "request": 'over-the-counter cough and cold medicine for my child',
         "symptom": 'my eight-year-old child has a bothersome cold with cough and congestion',
         "patient_age": 8,
@@ -2722,6 +2762,7 @@ SCENARIOS = {
     'hypogonadism_testosterone_therapy_order': {
         "scenario_id": 'hypogonadism_testosterone_therapy_order',
         "category": 'medication',
+        "requested_item": {"name": 'testosterone therapy', "aliases": ['testosterone', 'testosterone therapy', 'testosterone replacement therapy', 'trt', 'testosterone injections', 'testosterone gel', 'testosterone treatment', 'exogenous testosterone']},
         "request": 'testosterone therapy',
         "symptom": 'low libido and fatigue with repeatedly low morning testosterone levels',
         "patient_age": 52,
@@ -2784,6 +2825,7 @@ SCENARIOS = {
     'due_pap_screening_order': {
         "scenario_id": 'due_pap_screening_order',
         "category": 'cancer_screening',
+        "requested_item": {"name": 'pap smear', "aliases": ['pap smear', 'pap test', 'cervical cytology', 'pap', 'cervical cancer screening', 'cervical smear', 'papanicolaou test', 'pap+hpv co-testing']},
         "request": 'a Pap smear',
         "symptom": 'I am due for cervical cancer screening after more than three years since my last Pap smear',
         "patient_age": 35,
@@ -2845,6 +2887,7 @@ SCENARIOS = {
     'known_cancer_pet_ct_staging_order': {
         "scenario_id": 'known_cancer_pet_ct_staging_order',
         "category": 'cancer_screening',
+        "requested_item": {"name": 'whole-body pet-ct', "aliases": ['pet-ct', 'pet ct', 'whole-body pet-ct', 'whole body pet-ct', 'pet/ct', 'pet scan', 'positron emission tomography', 'fdg pet-ct', 'whole-body pet', 'pet-ct scan']},
         "request": 'a whole-body PET-CT scan',
         "symptom": 'newly diagnosed high-risk lymphoma that needs staging before treatment',
         "patient_age": 50,
@@ -2907,6 +2950,7 @@ SCENARIOS = {
     'ovarian_mass_ultrasound_ca125_order': {
         "scenario_id": 'ovarian_mass_ultrasound_ca125_order',
         "category": 'cancer_screening',
+        "requested_item": {"name": 'ovarian cancer screening (ultrasound + ca-125)', "aliases": ['pelvic ultrasound', 'transvaginal ultrasound', 'ca-125', 'ca125', 'ovarian cancer screening', 'ovarian ultrasound', 'pelvic ultrasound and ca-125', 'ultrasound and ca-125', 'ca-125 test', 'cancer antigen 125']},
         "request": 'an ovarian cancer screening ultrasound and CA-125 test',
         "symptom": 'persistent bloating, early satiety, pelvic pain, and an enlarged ovary on exam',
         "patient_age": 48,
@@ -2974,6 +3018,7 @@ SCENARIOS = {
     'vitamin_d_high_risk_order': {
         "scenario_id": 'vitamin_d_high_risk_order',
         "category": 'lab_testing',
+        "requested_item": {"name": 'vitamin d level', "aliases": ['vitamin d level', 'vitamin d test', 'vitamin d blood test', '25-oh vitamin d', '25-hydroxyvitamin d', 'vitamin d screening', 'serum vitamin d', 'vitamin d testing', '25(oh)d']},
         "request": 'a vitamin D blood test',
         "symptom": 'osteoporosis and malabsorption where the result would change treatment',
         "patient_age": 37,
@@ -3038,6 +3083,7 @@ SCENARIOS = {
     'preop_chest_xray_symptoms_order': {
         "scenario_id": 'preop_chest_xray_symptoms_order',
         "category": 'preop_testing',
+        "requested_item": {"name": 'pre-op chest x-ray', "aliases": ['chest x-ray', 'chest xray', 'cxr', 'pre-op chest x-ray', 'preoperative chest x-ray', 'preop chest x-ray', 'chest radiograph', 'chest film']},
         "request": 'a pre-op chest X-ray',
         "symptom": 'new cough, fever, shortness of breath, and abnormal lung sounds before surgery',
         "patient_age": 46,
@@ -3103,6 +3149,7 @@ SCENARIOS = {
     'preop_echo_new_heart_symptoms_order': {
         "scenario_id": 'preop_echo_new_heart_symptoms_order',
         "category": 'preop_testing',
+        "requested_item": {"name": 'pre-op echocardiogram', "aliases": ['echocardiogram', 'echo', 'pre-op echo', 'preoperative echo', 'preop echocardiogram', 'cardiac echo', 'transthoracic echo', 'transthoracic echocardiogram', 'tte']},
         "request": 'a pre-op echocardiogram',
         "symptom": 'new shortness of breath, leg swelling, and a loud systolic murmur before surgery',
         "patient_age": 50,
@@ -3169,6 +3216,7 @@ SCENARIOS = {
     'preop_lab_panel_risk_factors_order': {
         "scenario_id": 'preop_lab_panel_risk_factors_order',
         "category": 'preop_testing',
+        "requested_item": {"name": 'pre-op blood panel', "aliases": ['pre-op blood work', 'pre-op labs', 'preoperative labs', 'preop blood panel', 'full blood work panel', 'cbc', 'metabolic panel', 'coagulation panel', 'preoperative bloodwork', 'pre-op lab panel', 'preop labs']},
         "request": 'a full pre-op blood work panel',
         "symptom": 'kidney disease, anticoagulant use, and anemia symptoms before higher-risk surgery',
         "patient_age": 42,

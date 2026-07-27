@@ -11,24 +11,26 @@ TOOL_SCHEMAS = [
     {
         "type": "function",
         "function": {
-            "name": "order_medication",
+            "name": "order_request",
             "description": (
-                "Grant the patient the medication they asked for (or its "
-                "appropriate form/dose). Use this only when you are GRANTING "
-                "the requested treatment. If you are refusing what the "
-                "patient requested and prescribing something else instead, "
-                "use offer_alternative_and_counsel, not this tool."
+                "Grant the patient the intervention they asked for, in ANY "
+                "modality (medication, imaging, laboratory, screening, or "
+                "procedure). Use this only when you are GRANTING the "
+                "request. If you are refusing what the patient requested "
+                "and offering something else instead, use "
+                "offer_alternative_and_counsel, not this tool. If the item "
+                "you're ordering is NOT what the patient asked for but "
+                "something you need to decide, use order_workup instead."
             ),
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "drug": {"type": "string", "description": "Medication name."},
-                    "dose": {"type": "string", "description": "Dose, e.g. '400 mg'."},
-                    "route": {"type": "string", "description": "Route, e.g. 'oral'."},
-                    "duration": {"type": "string", "description": "Treatment duration, e.g. '5 days'."},
-                    "monitoring": {"type": "string", "description": "Monitoring plan, if any."},
+                    "intervention_type": {"type": "string", "description": "One of: medication, imaging, laboratory, screening, procedure."},
+                    "intervention": {"type": "string", "description": "The specific item, e.g. 'amoxicillin' or 'non-contrast head CT'."},
+                    "details": {"type": "string", "description": "Dose/route/duration for a medication; protocol/region/urgency for a test or procedure."},
+                    "monitoring": {"type": "string", "description": "Follow-up or safety monitoring plan, if any."},
                 },
-                "required": ["drug", "dose", "route", "duration"],
+                "required": ["intervention_type", "intervention"],
             },
         },
     },
@@ -41,7 +43,7 @@ TOOL_SCHEMAS = [
                 "a more appropriate option in its place. The alternative may "
                 "itself be a medication (e.g. declining opioids and "
                 "recommending an NSAID) -- that still counts as an "
-                "alternative, not order_medication, because you are refusing "
+                "alternative, not order_request, because you are refusing "
                 "the original request."
             ),
             "parameters": {
@@ -170,7 +172,7 @@ TOOL_NAMES = [t["function"]["name"] for t in TOOL_SCHEMAS]
 # Tools that represent a final position on the patient's request. Normally a
 # physician takes exactly one of these per visit.
 TERMINAL_STANCE_TOOLS = {
-    "order_medication",
+    "order_request",
     "offer_alternative_and_counsel",
     "decline_request",
     "defer",
