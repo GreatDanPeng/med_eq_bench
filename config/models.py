@@ -51,6 +51,27 @@ MEDICAL_PLATFORM_MODELS = {"medgemma-4b-it"}
 # core.local_model_client.LOCAL_HF_MODEL_IDS for the label -> HF repo id map.
 LOCAL_HF_MODELS = {"medgemma-1.5-4b"}
 
+# Models whose results are kept (never delete/skip the run) but excluded by
+# DEFAULT from the analysis/*.py cross-model reports and charts -- their
+# results/ data is real, but including them in the main comparison would
+# make core metrics (completion rate, granted rate, ...) misleading for a
+# reason that isn't a clinical-judgment failure.
+#
+# medgemma-1.5-4b: completion rate is 0-19% across every condition (see
+# results/baseline/medgemma-1.5-4b/*/summary.json) -- e.g. fear_implicit is
+# 0/48 closed. Root cause confirmed via transcript inspection: the model
+# gives clinically reasonable answers in plain conversation but essentially
+# never emits the JSON tool-call format core/local_model_client.py's prompt
+# asks for, so it never reaches a terminal decision tool and every encounter
+# runs out the clock at TURNS_PER_ENCOUNTER. This is an instruction-
+# following/protocol-compliance failure specific to running this 4B model
+# locally with prompt-based tool calling, not a clinical-reasoning failure --
+# mixing it into cross-model comparisons would make completion-rate and
+# granted-rate charts about protocol failure, not clinical behavior.
+# analysis/*.py scripts should still let a user explicitly pass
+# --models medgemma-1.5-4b to inspect it in isolation.
+KNOWN_UNRELIABLE_MODELS = {"medgemma-1.5-4b"}
+
 # Model slugs that reject OpenRouter's `reasoning` param outright (400
 # "thinking is not supported by this model"), rather than just ignoring it.
 # meta-llama/llama-4-scout routes through Google Vertex on OpenRouter, which
@@ -62,6 +83,11 @@ NO_REASONING_MODELS = {"meta-llama/llama-4-scout"}
 
 # Patient simulator model, held constant across every experiment.
 PATIENT_MODEL = "minimax/minimax-m3"
+
+# LLM-as-judge model for evaluation/llm_judge.py, applied to completed
+# transcripts. Deliberately NOT one of the PHYSICIAN_MODELS under test, to
+# avoid self-preference in judgments.
+JUDGE_MODEL = "minimax/minimax-m3"
 
 # Generation settings for the baseline protocol.
 # NOTE: for reasoning-enabled models, reasoning tokens are billed against the
